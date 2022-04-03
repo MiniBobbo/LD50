@@ -97,7 +97,7 @@ export class NinjaFSM extends FSMModule {
         // this.gs.cursor.y | this.p.sprite.y
 
         console.log('jump');
-        SM.PlaySFX(SFX.NinjaJump);
+        SM.PlaySFX(SFX.Woosh);
         let a = Phaser.Math.Angle.BetweenPoints(this.gs.p.sprite, cpos);
         let v = new Phaser.Math.Vector2(C.NINJA_JUMP_STR, 0);
         v.rotate(a);

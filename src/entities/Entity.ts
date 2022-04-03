@@ -61,7 +61,7 @@ export class Entity {
     }
 
     Dead() {
-        console.log(`${this.sprite.name} dead`);
+        // console.log(`${this.sprite.name} dead`);
         this.sprite.body.enable = false;
         this.sprite.setVisible(false);
         this.fsm.changeModule('nothing');

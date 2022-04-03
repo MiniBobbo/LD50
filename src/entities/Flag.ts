@@ -7,7 +7,7 @@ export class Flag extends Entity {
     constructor(scene:Phaser.Scene, ih:IH) {
         super(scene, ih);
         // this.gs.collideMap.push(this.sprite);
-        this.sprite.setSize(20,20);
+        this.sprite.setSize(16,20);
         this.sprite.setDepth(100);
         // this.sprite.setOffset(1,0);
         this.sprite.name = 'flag';

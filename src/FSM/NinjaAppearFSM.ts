@@ -14,8 +14,14 @@ export class NinjaAppearFSM extends FSMModule {
         this.p = this.parent as Player;
         this.gs = this.p.gs;
 
-        this.p.PlayAnimation('appear');
+        this.p.PlayAnimation('disappear');
         this.p.sprite.setGravity(0, C.GRAVITY);
+
+        
+        let poof = this.gs.add.sprite(this.p.sprite.x, this.p.sprite.y, 'atlas', 'poof_0').setDepth(100);
+        this.gs.realLayer.add(poof);
+        poof.play('effect_poof');
+
 
         this.gs.events.on(CustomEvents.LEVEL_START, this.StartLevel, this);
         

@@ -14,15 +14,16 @@ MVP
 
 Sprint 2
 * Ninja Animations
-Level Start Transitions
-Tileset 1 complete
+* Level Start Transitions
+* Tileset 1 complete
 * Soldiers that can be killed
 * Victory condition about killing soldiers
-Level Complete Transitions
+* Level Complete Transitions
 * Level 2 Complete
 * Main Menu pretty
 * Load Web Fonts
 * Cursor behind flag.  Fix the order of stuff with layers.
+* Soldier death animations
 
 Sprint 3
 Throwing stars added.

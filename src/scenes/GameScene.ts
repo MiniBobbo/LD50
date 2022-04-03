@@ -82,7 +82,7 @@ export class GameScene extends Phaser.Scene {
             classType:Phaser.GameObjects.Sprite
         });
         
-        // this.events.on('effect', this.Effect, this);
+        this.events.on('effect', this.Effect, this);
         this.p.sprite.on(CustomEvents.LEVEL_FAILED, this.PlayerDied, this);
         // this.events.on('travel', () => { this.e.fsm.clearModule(); this.cameras.main.fadeOut(200, 0,0,0,(cam:any, progress:number) => { if(progress == 1) this.scene.restart();}); }, this);
         // this.CreateZones();
@@ -113,6 +113,9 @@ export class GameScene extends Phaser.Scene {
             }
 
         });
+    }
+    Effect(arg0: string, Effect: any, arg2: this) {
+        throw new Error("Method not implemented.");
     }
 
 
@@ -151,7 +154,16 @@ export class GameScene extends Phaser.Scene {
     private CreateListeners() {
         this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
         this.events.on(CustomEvents.CHECK_LEVEL_COMPLETE, ()=> {if(this.Win.CheckVictory()) this.events.emit(CustomEvents.LEVEL_COMPLETE);});
-        this.events.on(CustomEvents.LEVEL_COMPLETE, () => {this.scene.start('menu')});
+        this.events.on(CustomEvents.LEVEL_COMPLETE, () => {
+            
+            this.time.addEvent({
+                delay:2000,
+                callbackScope:this, 
+                callback:() => {this.scene.start('menu');}
+            });
+            
+        
+        });
 
     }
 

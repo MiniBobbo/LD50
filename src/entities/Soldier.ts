@@ -1,6 +1,7 @@
 import { C } from "../C";
 import { CustomEvents } from "../enum/CustomEvents";
 import { IH } from "../IH/IH";
+import { SFX, SM } from "../SM";
 import { Entity } from "./Entity";
 
 export class Soldier extends Entity {
@@ -22,6 +23,9 @@ export class Soldier extends Entity {
             this.gs.events.emit(CustomEvents.PLAYER_HIT_SOLDIER);
             this.gs.events.emit(CustomEvents.CHECK_LEVEL_COMPLETE);
             this.Dead();
+            this.sprite.setVisible(true);
+            SM.PlaySFX(SFX.Slice);
+            this.PlayAnimation('dead');
         });
 
     }

@@ -25,7 +25,9 @@ export class MapHelper {
         this.CreateEntities(gs, solidmaps);
         this.SetPhysics(gs, solidmaps);
         gs.Win = new WinConditions(gs, solidmaps);
-        gs.add.bitmapText(10,235, '6px', gs.Win.GoalText).setScrollFactor(0,0).setDepth(1000).setFontSize(8);
+        let vt = gs.add.text(0,2, gs.Win.GoalText, {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+        .setScrollFactor(0,0).setFontSize(16).setWordWrapWidth(250).setFixedSize(250,0);
+        gs.HudLayer.add(vt);
         // let outlinemaps = r.CreateMap(level, 'outlinets');
         // gs.outlineLayer.add(outlinemaps.displayLayers.find(e => e.name == 'Outline'));
 

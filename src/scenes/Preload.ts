@@ -76,11 +76,20 @@ export class Preload extends Phaser.Scene {
         // this.load.image('mockup_1');
         this.load.image('lighttest');
         this.load.json('levels', 'Levels.ldtk');
-        this.load.audio('Funkjutsu', ['./music/Funkjutsu.mp3']);
+        this.load.audio('slice1', ['./sounds/Slash_Enemy_Kill.wav']);
+        this.load.audio('slice2', ['./sounds/Slash_Enemy_Kill_2.wav']);
+        this.load.audio('ninjadeath', ['./sounds/Player_death.wav']);
+        this.load.audio('ninjaland1', ['./sounds/Jump_landing_1.wav']);
+        this.load.audio('ninjaland2', ['./sounds/Jump_landing_2.wav']);
+        this.load.audio('woosh1', ['./sounds/Jump_whoosh_1.wav']);
+        this.load.audio('woosh2', ['./sounds/Jump_whoosh_2.wav']);
+        this.load.audio('woosh3', ['./sounds/Jump_whoosh_3.wav']);
+        this.load.audio('Funkjutsu', ['./music/Funkjutsu_2.mp3']);
         this.load.audio('Slap That Ninja', ['./music/Slap_That_Ninja.mp3']);
         // this.load.audio()
 
-    }
+    }LD50
+
 
 
     create() {
@@ -119,7 +128,7 @@ export class Preload extends Phaser.Scene {
 
         // this.anims.create({ key: 'ninja_run', frameRate: 60, frames: this.anims.generateFrameNames('atlas', { prefix: 'ninja_running_', end: 5}), repeat: -1 });
         this.CreateAnimSet('ninja_appear', 'ninja_disappear_', 3, 0, 12);
-        this.CreateAnimSet('ninja_disappear', 'ninja_disappear_', 3, 0, 12);
+        this.CreateAnimSet('ninja_disappear', 'ninja_disappear_', 5, 0, 12);
         this.CreateAnimSet('ninja_run', 'ninja_running_', 5, -1, 30);
         this.CreateAnimSet('ninja_wallgrab', 'ninja_wallgrab_', 1, -1, 1);
         this.CreateAnimSet('ninja_crouch', 'ninja_idle_', 1, -1, 1);
@@ -128,6 +137,8 @@ export class Preload extends Phaser.Scene {
         this.CreateAnimSet('ninja_jump_side', 'ninja_jump_side_', 23, 0, 60, 3);
         this.CreateAnimSet('flag_wave', 'flag_wave_', 3, -1, 6);
         this.CreateAnimSet('soldier_stand', 'soldier_stand_', 0, 0, 6);
+        this.CreateAnimSet('soldier_dead', 'soldier_dead_', 8, 0, 12);
+        this.CreateAnimSet('effect_poof', 'poof_', 48, 0, 60);
         // this.anims.create({ key: 'player_stand', frameRate: 60, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_stand_', end: 0}), repeat: -1 });
         // this.anims.create({ key: 'player_run', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_run_', end: 7}), repeat: -1 });
         // this.anims.create({ key: 'player_jumpup', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpup_', end: 0}), repeat: -1 });

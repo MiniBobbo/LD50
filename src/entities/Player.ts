@@ -27,6 +27,20 @@ export class Player extends Entity {
 
     Disappear() {
         this.Dead();
+        let s = this.gs.add.sprite(this.sprite.body.x + 6, this.sprite.body.y + 7, 'atlas', 'ninja_disappear_0').setDepth(100);
+        s.play('ninja_disappear');
+        this.gs.realLayer.add(s);
+        this.gs.time.addEvent({
+            delay:500,
+            callbackScope:this,
+            callback:() => {
+                s.setVisible(false);
+                let poof = this.gs.add.sprite(s.x, s.y, 'atlas', 'poof_0').setDepth(100);
+                this.gs.realLayer.add(poof);
+                poof.play('effect_poof');
+            }
+
+        });
 
         
     }
