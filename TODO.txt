@@ -1,0 +1,11 @@
+* Ninja jumps from surfaces
+* Ninja sticks to surfaces
+* Ninja runs along floor
+* Camera follows player
+Menu Level Select
+Flag Level Complete goal
+
+
+Animations
+Ninja jumping
+Ninja appear

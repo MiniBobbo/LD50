@@ -4,6 +4,8 @@ import { EnemyFactory } from "../EnemyFactory";
 import { Entity } from "../entities/Entity";
 import { Player } from "../entities/Player";
 import { LDtkMapPack, LdtkReader } from "../map/LDtkReader";
+import { MapHelper } from "../helpers/MapHelper";
+import { CustomEvents } from "../enum/CustomEvents";
 
 export class GameScene extends Phaser.Scene {
     ih!:IH;
@@ -13,11 +15,19 @@ export class GameScene extends Phaser.Scene {
     LightObjects:Phaser.GameObjects.Container;
     PointerOffset:{x:number, y:number};
     cursor:Phaser.GameObjects.Image;
-    
+
+    maps:LDtkMapPack;
+
+    debugText:Phaser.GameObjects.BitmapText;
+
+    collideMap!:Array<Phaser.GameObjects.GameObject>;
+
     initRun:boolean = false;
 
     l:Phaser.GameObjects.Image;
     g:Phaser.GameObjects.Group;
+
+    p:Player;
 
 
     preload() {
@@ -27,65 +37,25 @@ export class GameScene extends Phaser.Scene {
 
     init() {
         this.initRun = true;
+        // this.collideMap = [];
     }
 
     create() {
         if(!this.initRun) {
             this.init();
         }
+        this.collideMap = [];
         this.CreateBaseObjects();
+        this.MouseCapture();
+        MapHelper.CreateMap(this);
 
-    // Pointer lock will only work after an 'engagement gesture', e.g. mousedown, keypress, etc.
-    this.input.on('pointerdown', (pointer) => {
-        if (!this.input.mouse.locked)
-        {
-            this.PointerOffset.x += pointer.x;
-            this.PointerOffset.y += pointer.y;
-        }
+        this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(10).setScrollFactor(0);
 
-        this.input.mouse.requestPointerLock();
-
-
-    }, this);
-
-    // When locked, you will have to use the movementX and movementY properties of the pointer
-    // (since a locked cursor's xy position does not update)
-    this.input.on('pointermove', (pointer) => {
-
-        if (this.input.mouse.locked)
-        {
-            this.PointerOffset.x += Math.floor(pointer.movementX * C.MOUSE_SENSITIVITY);
-            this.PointerOffset.x = Phaser.Math.Clamp(this.PointerOffset.x, 0, C.GAME_WIDTH);
-            this.PointerOffset.y += Math.floor(pointer.movementY * C.MOUSE_SENSITIVITY);
-            this.PointerOffset.y = Phaser.Math.Clamp(this.PointerOffset.y, 0, C.GAME_WIDTH);
-            // this.l.setPosition(this.PointerOffset.x, this.PointerOffset.y);
-            this.cursor.setPosition(this.PointerOffset.x, this.PointerOffset.y);
-
-
-        }
-    }, this);
-
-
-
-
-
-
-        // let r:LdtkReader = new LdtkReader(this,this.cache.json.get('level_0'));
-
-        this.add.image(0,0,'solidts');
-
-        // r.CreateAutoLayer('MG', );
-        
-        // this.add.image(0,0,'mapts');
 
         // l.setCollision([1,2]);
-        // l.renderDebug(g);
-        // this.add.image(0,0, 'atlas');
         
-        // this.e = new Player(this, this.ih);
-        // this.e.sprite.setFrame("player_jumpdown_1");
-        // this.cameras.main.startFollow(this.e.sprite);
-        // this.cameras.main.setBounds(0,0,belowLayer.width, belowLayer.height);
+        this.cameras.main.startFollow(this.p.sprite);
+        this.cameras.main.setBounds(0,0, this.maps.collideLayer.width, this.maps.collideLayer.height);
         // this.physics.add.collider(this.collideMap, belowLayer);
         // this.physics.add.overlap(this.e.sprite, this.zones, (sprite:Phaser.Physics.Arcade.Sprite, z:Phaser.GameObjects.Zone) => {
         //     z.emit('overlap', sprite);
@@ -103,57 +73,65 @@ export class GameScene extends Phaser.Scene {
         // let prop = this.map.properties as Array<{name:string, type:string, value:any}>;
         // let ambient = prop.find((e:any) =>{return e.name == 'ambient'});
 
-        // let hb = new HealthBar(this);
-        // hb.setDepth(100);
-
         // this.events.on('effect', this.Effect, this);
         // this.e.sprite.on('dead', this.PlayerDied, this);
-        // this.events.on('message', (message:string, x:number, y:number, width:number) => {this.messageText.setPosition(Math.floor(x),Math.floor(y));  this.messageText.message = message; this.messageText.setAlpha(1);}, this);
-        // this.events.on('shutdown', this.ShutDown, this);
-        // // this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
+        this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
         // this.events.on('travel', () => { this.e.fsm.clearModule(); this.cameras.main.fadeOut(200, 0,0,0,(cam:any, progress:number) => { if(progress == 1) this.scene.restart();}); }, this);
-        // this.events.on('textbox', (speaker:{x:number, y:number}, message:string) => {
-        //     this.tb.setVisible(true);
-        //     this.tb.SetText(message); 
-        //     this.tb.MoveAbove(speaker); 
-        // }, this);
-        // this.events.on('hidetextbox', ()=> {this.tb.setVisible(false);}, this);
-        // this.input.on('pointerup', (pointer:any) => {
-        //     },this);
         // this.CreateZones();
 
-        // if(C.previouslevel == 'checkpoint') {
-        //     let c:any = this.map.objects[0].objects.find((o)=> {return o.name == 'checkpoint';});
-        //     c.y -= 16;
-        //     this.e.sprite.setPosition(c.x,c.y);
-        // } else {
-        //     let c:any = this.map.objects[0].objects.find((o)=> {return o.name == 'd' && o.type == C.previouslevel;});
-        //     // c.y -= 16;
-        //     this.e.sprite.setPosition(c.x,c.y);
-
-        // }
-
-        // this.tb = new TextBox(this, this.ih);
-        // this.tb.setVisible(false);
         this.cameras.main.setRoundPixels(true);
         this.cameras.main.fadeIn(300);
 
-        }
+    }
+
+    private MouseCapture() {
+        this.input.on('pointerdown', (pointer:Phaser.Input.Pointer) => {
+            // console.log('GameScene Clicked');
+            if (!this.input.mouse.locked) {
+                this.PointerOffset.x += pointer.x;
+                this.PointerOffset.y += pointer.y;
+                this.input.mouse.requestPointerLock();
+            } else {
+                this.events.emit(CustomEvents.PLAYER_CLICKED, pointer);
+            }
+
+
+
+        }, this);
+
+        // When locked, you will have to use the movementX and movementY properties of the pointer
+        // (since a locked cursor's xy position does not update)
+        this.input.on('pointermove', (pointer) => {
+
+            if (this.input.mouse.locked) {
+                this.PointerOffset.x += Math.floor(pointer.movementX * C.MOUSE_SENSITIVITY);
+                this.PointerOffset.x = Phaser.Math.Clamp(this.PointerOffset.x, 0, C.GAME_WIDTH);
+                this.PointerOffset.y += Math.floor(pointer.movementY * C.MOUSE_SENSITIVITY);
+                this.PointerOffset.y = Phaser.Math.Clamp(this.PointerOffset.y, 0, C.GAME_WIDTH);
+                // this.l.setPosition(this.PointerOffset.x, this.PointerOffset.y);
+                this.cursor.setPosition(this.PointerOffset.x, this.PointerOffset.y);
+
+
+            }
+        }, this);
+    }
 
     private CreateBaseObjects() {
         this.PointerOffset = { x: 0, y: 0 };
         this.realLayer = this.add.layer().setDepth(100);
         this.outlineLayer = this.add.layer().setDepth(50);
         this.realMask = this.add.renderTexture(0, 0, 250, 250);
-        this.LightObjects = this.add.container(0, 0).setVisible(false);
+        this.LightObjects = this.add.container(0, 0);
+
+        this.l = this.add.image(100,100, 'lighttest').setVisible(false);
 
         this.cursor = this.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0);
 
-        this.realLayer.add(this.add.image(0, 0, 'mockup_0').setOrigin(0, 0));
-        this.outlineLayer.add(this.add.image(0, 0, 'mockup_1').setOrigin(0, 0));
+        // this.realLayer.add(this.add.image(0, 0, 'mockup_0').setOrigin(0, 0));
+        // this.outlineLayer.add(this.add.image(0, 0, 'mockup_1').setOrigin(0, 0));
         this.realLayer.mask = new Phaser.Display.Masks.BitmapMask(this, this.LightObjects);
 
-        // this.LightObjects.add(this.l);
+        this.LightObjects.add(this.l);
     }
 
     /**
@@ -181,17 +159,18 @@ export class GameScene extends Phaser.Scene {
 
     update(time:number, dt:number) {
         this.ih.update();
+        this.debugText.text = '';
 
         this.realMask.clear();
         // this.realMask.fill(0x000000);
         
-        this.realMask.draw(this.l);
+        this.realMask.draw(this.LightObjects);
 
         if(this.ih.IsJustPressed('event')) {
             // this.events.emit('unlock');
         }
 
-        // this.events.emit('debug', `Effects: ${this.effects.getLength()}`);
+        this.events.emit('debug', `State: ${this.p.fsm.currentModuleName}`);
         // this.events.emit('debug', `P loc: ${Math.floor(this.e.sprite.body.x)},  ${Math.floor(this.e.sprite.body.y)}`);
         // this.events.emit('debug', `Mouse loc: ${Math.floor(this.input.mousePointer.worldX)},  ${Math.floor(this.input.mousePointer.worldY)}`);
 
