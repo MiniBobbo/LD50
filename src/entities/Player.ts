@@ -1,9 +1,8 @@
 import { Entity } from "./Entity";
 import { IH } from "../IH/IH";
 import { C } from "../C";
-import { NinjaSurface } from "../FSM/NinjaSurface";
-import { NinjaJump } from "../FSM/NinjaJump";
 import { NinjaFSM } from "../FSM/NinjaFSM";
+import { NinjaAppearFSM } from "../FSM/NinjaAppearFSM";
 
 export class Player extends Entity {
 
@@ -17,9 +16,10 @@ export class Player extends Entity {
         // this.sprite.setDepth(5);
         this.PlayAnimation('run');
         this.fsm.addModule('ninja', new NinjaFSM(this));
+        this.fsm.addModule('appear', new NinjaAppearFSM(this));
 
 
-        this.fsm.changeModule('ninja');
+        this.fsm.changeModule('appear');
     }
 
     Update(time:number, dt:number) {

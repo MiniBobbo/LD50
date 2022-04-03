@@ -300,15 +300,7 @@ export interface DefaultOverride {
 }
 
 export enum FieldDefIdentifier {
-    Angry = "Angry",
-    Direction = "Direction",
-    Frequency = "Frequency",
-    Position = "Position",
-    Radius = "Radius",
-    Speed = "Speed",
-    Text = "Text",
-    TorchPrimary = "TorchPrimary",
-    TorchSecondary = "TorchSecondary",
+    Flag = "Flag",
 }
 
 export interface TypeClass {
@@ -318,14 +310,7 @@ export interface TypeClass {
 
 export enum EntityIdentifier {
     NinjaStart = "NinjaStart",
-    Bolters = "Bolters",
-    End = "End",
-    Ghost = "Ghost",
-    Positions = "Positions",
-    Start = "Start",
-    Text = "Text",
-    Torch = "Torch",
-    Waterfall = "Waterfall",
+    Flag = 'Flag',
 }
 
 export interface Enum {
@@ -458,7 +443,8 @@ export enum ID {
 }
 
 export enum LevelFieldIdentifier {
-    Ambient = "Ambient",
+    Flag = "Flag",
+    Level_Goal = "Level_Goal",
 }
 
 export interface Tileset {

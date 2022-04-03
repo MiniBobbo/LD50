@@ -5,7 +5,7 @@ export class GameData {
 
     constructor() {
         this.flags = [];
-        for(let i = 0; i < C.FLAG_COUNT; i++)
-            this.flags.push(false);
+        // for(let i = 0; i < C.FLAG_COUNT; i++)
+        //     this.flags.push(false);
     }
 }

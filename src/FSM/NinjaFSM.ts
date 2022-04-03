@@ -135,6 +135,7 @@ export class NinjaFSM extends FSMModule {
      */
     Run() {
         this.running = true;
+        this.p.sprite.setGravityY(C.GRAVITY);
         if(this.target.x > this.p.sprite.x) 
             this.p.sprite.setVelocityX(C.NINJA_GROUND_SPEED);
         else    
@@ -170,12 +171,17 @@ export class NinjaFSM extends FSMModule {
                 }
 
             }
-        } else if(this.running && this.p.sprite.body.velocity.x > 0 && this.p.sprite.x >= this.target.x) {
-            this.StopRun();
-        } else if(this.running && this.p.sprite.body.velocity.x < 0 && this.p.sprite.x <= this.target.x) {
-            this.StopRun();
+        }  else if(this.running) {
+            if(!this.p.sprite.body.blocked.down) {
+                this.StopRun();
+            } else if(this.p.sprite.body.velocity.x > 0 && this.p.sprite.x >= this.target.x) {
+                this.StopRun();
+            } else if(this.p.sprite.body.velocity.x < 0 && this.p.sprite.x <= this.target.x) {
+                this.StopRun();
+            }
+    
         }
-
+        
     }
     StopRun() {
         this.p.sprite.setVelocityX(0);

@@ -14,10 +14,11 @@ export class NinjaAppearFSM extends FSMModule {
         this.p = this.parent as Player;
         this.gs = this.p.gs;
 
-        this.p.PlayAnimation('crouch');
+        this.p.PlayAnimation('appear');
         this.p.sprite.setGravity(0, C.GRAVITY);
 
         this.gs.events.on(CustomEvents.LEVEL_START, this.StartLevel, this);
+        
 
     }
     StartLevel(LEVEL_START: CustomEvents, StartLevel: any, arg2: this) {
@@ -25,10 +26,10 @@ export class NinjaAppearFSM extends FSMModule {
     }
 
     update(dt: number): void {
-        if(this.p.sprite.body.blocked.down) {
-            this.p.PlayAnimation('crouch');
+        // if(this.p.sprite.body.blocked.down) {
+            // this.p.PlayAnimation('crouch');
             // this.parent.changeFSM('ninja');
-        }
+        // }
 
     }
 }

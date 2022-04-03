@@ -6,8 +6,11 @@ import { Player } from "../entities/Player";
 import { LDtkMapPack, LdtkReader } from "../map/LDtkReader";
 import { MapHelper } from "../helpers/MapHelper";
 import { CustomEvents } from "../enum/CustomEvents";
+import { WinConditions } from "../WinConditions";
 
 export class GameScene extends Phaser.Scene {
+    initRun:boolean = false;
+
     ih!:IH;
     realLayer:Phaser.GameObjects.Layer;
     outlineLayer:Phaser.GameObjects.Layer;
@@ -19,14 +22,13 @@ export class GameScene extends Phaser.Scene {
     maps:LDtkMapPack;
 
     debugText:Phaser.GameObjects.BitmapText;
-
     collideMap!:Array<Phaser.GameObjects.GameObject>;
+    collidePlayer!:Phaser.GameObjects.Group;
 
-    initRun:boolean = false;
+    Win:WinConditions;
 
-    l:Phaser.GameObjects.Image;
-    g:Phaser.GameObjects.Group;
 
+    //Entity variables 
     p:Player;
 
 
@@ -37,20 +39,24 @@ export class GameScene extends Phaser.Scene {
 
     init() {
         this.initRun = true;
+        this.collidePlayer = this.add.group();
         // this.collideMap = [];
     }
 
-    create() {
+    create(data:{levelName:string}) {
         if(!this.initRun) {
             this.init();
         }
+        this.collidePlayer.clear();
         this.collideMap = [];
         this.CreateBaseObjects();
         this.MouseCapture();
-        MapHelper.CreateMap(this);
+        MapHelper.CreateMap(this, data.levelName);
 
         this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(10).setScrollFactor(0);
 
+        this.CreateListeners();
+        this.events.once('shutdown', this.RemoveListeners, this);
 
         // l.setCollision([1,2]);
         
@@ -62,9 +68,6 @@ export class GameScene extends Phaser.Scene {
             // console.log(`Hit zone ${z.name}`);
         // });
 
-        // this.physics.add.overlap(this.e.sprite, this.enemies, (p:any, e:any) => {
-        //     e.emit('hitplayer', p);
-        // }); 
 
         // this.effects = this.add.group({
         //     classType:Phaser.GameObjects.Sprite
@@ -75,14 +78,22 @@ export class GameScene extends Phaser.Scene {
 
         // this.events.on('effect', this.Effect, this);
         // this.e.sprite.on('dead', this.PlayerDied, this);
-        this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
         // this.events.on('travel', () => { this.e.fsm.clearModule(); this.cameras.main.fadeOut(200, 0,0,0,(cam:any, progress:number) => { if(progress == 1) this.scene.restart();}); }, this);
         // this.CreateZones();
 
         this.cameras.main.setRoundPixels(true);
         this.cameras.main.fadeIn(300);
 
+        this.time.addEvent({
+            delay:1000,
+            callbackScope:this,
+            callback:() => {
+                this.events.emit(CustomEvents.LEVEL_START);
+            }
+
+        });
     }
+
 
     private MouseCapture() {
         this.input.on('pointerdown', (pointer:Phaser.Input.Pointer) => {
@@ -94,7 +105,7 @@ export class GameScene extends Phaser.Scene {
             } else {
                 this.events.emit(CustomEvents.PLAYER_CLICKED, pointer);
             }
-
+        
 
 
         }, this);
@@ -116,6 +127,25 @@ export class GameScene extends Phaser.Scene {
         }, this);
     }
 
+    private CreateListeners() {
+        this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
+        this.events.on(CustomEvents.CHECK_LEVEL_COMPLETE, ()=> {if(this.Win.CheckVictory()) this.events.emit(CustomEvents.LEVEL_COMPLETE);});
+        this.events.on(CustomEvents.LEVEL_COMPLETE, () => {this.scene.start('menu')});
+
+    }
+
+    private RemoveListeners() {
+        console.log('Removing all listeners!');
+        // this.events.removeListener('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
+        // this.events.removeListener(CustomEvents.CHECK_LEVEL_COMPLETE, ()=> {if(this.Win.CheckVictory()) this.events.emit(CustomEvents.LEVEL_COMPLETE);});
+        // this.events.removeListener(CustomEvents.LEVEL_COMPLETE, () => {this.scene.start('menu')});
+        this.events.removeListener('debug');
+        this.events.removeListener(CustomEvents.CHECK_LEVEL_COMPLETE);
+        this.events.removeListener(CustomEvents.LEVEL_COMPLETE);
+
+    }
+
+
     private CreateBaseObjects() {
         this.PointerOffset = { x: 0, y: 0 };
         this.realLayer = this.add.layer().setDepth(100);
@@ -123,7 +153,6 @@ export class GameScene extends Phaser.Scene {
         this.realMask = this.add.renderTexture(0, 0, 250, 250);
         this.LightObjects = this.add.container(0, 0);
 
-        this.l = this.add.image(100,100, 'lighttest').setVisible(false);
 
         this.cursor = this.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0);
 
@@ -131,19 +160,18 @@ export class GameScene extends Phaser.Scene {
         // this.outlineLayer.add(this.add.image(0, 0, 'mockup_1').setOrigin(0, 0));
         this.realLayer.mask = new Phaser.Display.Masks.BitmapMask(this, this.LightObjects);
 
-        this.LightObjects.add(this.l);
     }
 
     /**
      * remove the listeners of all the events creted in create() or they will fire multiple times.  
      */
-    ShutDown() {
-        this.events.removeListener('shutdown');
-        this.events.removeListener('debug');
-        this.events.removeListener('travel');
-        this.events.removeListener('effect');
-        this.events.removeListener('pointerup');
-    }
+    // ShutDown() {
+    //     this.events.removeListener('shutdown');
+    //     this.events.removeListener('debug');
+    //     this.events.removeListener('travel');
+    //     this.events.removeListener('effect');
+    //     this.events.removeListener('pointerup');
+    // }
 
     // Effect(data:{name:string, x:number, y:number}) {
     //     let e:Phaser.GameObjects.Sprite = this.effects.getFirstDead(true, 100,100,'atlas');
@@ -160,6 +188,7 @@ export class GameScene extends Phaser.Scene {
     update(time:number, dt:number) {
         this.ih.update();
         this.debugText.text = '';
+        this.Win.update();
 
         this.realMask.clear();
         // this.realMask.fill(0x000000);

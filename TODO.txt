@@ -1,11 +1,33 @@
+MVP
 * Ninja jumps from surfaces
 * Ninja sticks to surfaces
 * Ninja runs along floor
 * Camera follows player
 * Clicking not using world position
-Menu Level Select
-Flag Level Complete goal
+* Menu Level Select
+* Ninja positioned correctly at start
+* Ninja falls when running
+* Flag Level Complete goal
+* Flag appears in level, because it isn't for some reason.
+* First tutorial level complete
+* Display the goal on the screen
 
+Sprint 2
+Level Start Transitions
+Tileset for forest complete
+Soldiers that can be killed
+Victory condition about killing soldiers
+Level Complete Transitions
+Level 2 Complete
+Main Menu pretty
+Load Web Fonts
+
+Sprint 3
+Throwing stars added.
+Level 3 completed.
+
+Quality of Life Improvements
+Reposition the cursor to where it was in the previous scene
 
 Animations
 Ninja jumping
