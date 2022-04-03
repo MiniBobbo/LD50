@@ -2,6 +2,7 @@
 * Ninja sticks to surfaces
 * Ninja runs along floor
 * Camera follows player
+* Clicking not using world position
 Menu Level Select
 Flag Level Complete goal
 

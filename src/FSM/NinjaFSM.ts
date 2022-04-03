@@ -56,21 +56,24 @@ export class NinjaFSM extends FSMModule {
     }
 
     TryJump() {
+        //Check the screen position and not the world position.  That will mess up depending on the camera.
+        let cam = this.gs.cameras.main;
+        let cpos = {x: cam.scrollX + this.gs.cursor.x, y: cam.scrollY + this.gs.cursor.y}; 
         switch (this.dir) {
             case D.D:
-                if(this.gs.cursor.y < this.p.sprite.y) {
-                    this.Jump();
+                if(cpos.y < this.p.sprite.y) {
+                    this.Jump(cpos);
                 }
                 else {
-                    this.target.x = this.gs.cursor.x;
+                    this.target.x = cpos.x;
                     this.target.y = this.p.sprite.y;
                     this.Run();
                 }
             
                 break;
             case D.U:
-                if(this.gs.cursor.y > this.p.sprite.y) {
-                    this.Jump();
+                if(cpos.y > this.p.sprite.y) {
+                    this.Jump(cpos);
                 }
                 else {
                     // this.target.x = this.gs.cursor.x;
@@ -80,8 +83,8 @@ export class NinjaFSM extends FSMModule {
             
                 break;
             case D.L:
-                if(this.gs.cursor.x > this.p.sprite.x) {
-                    this.Jump();
+                if(cpos.x > this.p.sprite.x) {
+                    this.Jump(cpos);
                 }
                 else {
                     //TODO: Climb?
@@ -89,8 +92,8 @@ export class NinjaFSM extends FSMModule {
             
             break;
         case D.R:
-                if(this.gs.cursor.x < this.p.sprite.x) {
-                    this.Jump();
+                if(cpos.x < this.p.sprite.x) {
+                    this.Jump(cpos);
                 }
                 else {
                     //TODO: Climb?
@@ -104,11 +107,11 @@ export class NinjaFSM extends FSMModule {
 
     }
 
-    Jump() {
+    Jump(cpos:{x:number, y:number}) {
         // this.gs.cursor.y | this.p.sprite.y
 
         SM.PlaySFX(SFX.NinjaJump);
-        let a = Phaser.Math.Angle.BetweenPoints(this.gs.p.sprite, this.gs.cursor);
+        let a = Phaser.Math.Angle.BetweenPoints(this.gs.p.sprite, cpos);
         let v = new Phaser.Math.Vector2(C.NINJA_JUMP_STR, 0);
         v.rotate(a);
         this.p.sprite.setVelocity(v.x, v.y);
