@@ -12,9 +12,13 @@ export class MapHelper {
         let level = levelName;
         let r: LdtkReader = new LdtkReader(gs, gs.cache.json.get('levels'));
 
-        //This is stupid to create the same map twice because it doesn't have 
+        //This is stupid to create the same map twice because it doesn't have the ability to 
+        //one map doesn't use multiple tilesets but I don'd have time to change it.
         let solidmaps = r.CreateMap(level, 'solidts');
         gs.maps = solidmaps;
+        solidmaps.displayLayers.forEach(element => {
+            gs.realLayer.add(element);
+        });
         // gs.realLayer.add(solidmaps.displayLayers.find(e => e.name == 'MG'));
         solidmaps.collideLayer.setCollision([1]);
         
@@ -33,16 +37,19 @@ export class MapHelper {
         gs.p = new Player(gs, gs.ih);
         gs.p.sprite.setPosition(startlocation.px[0], startlocation.px[1]);
         gs.collideMap.push(gs.p.sprite);
+        gs.realLayer.add(gs.p.sprite);
 
         level.entityLayers.entityInstances.forEach(element => {
             switch (element.__identifier) {
                 case EntityIdentifier.Flag:
                     let f = new Flag(gs, gs.ih);
-                    f.sprite.setPosition(element.px[0]+10,element.px[1]+10);                    
+                    f.sprite.setPosition(element.px[0]+10,element.px[1]+10);   
+                    gs.realLayer.add(f.sprite);                 
                     break;
                 case EntityIdentifier.Soldier:
                     let s = new Soldier(gs, gs.ih);
-                    s.sprite.setPosition(element.px[0]+10,element.px[1]+10);                    
+                    s.sprite.setPosition(element.px[0]+10,element.px[1]+10);      
+                    gs.realLayer.add(s.sprite);              
                     break;
                 default:
                     break;

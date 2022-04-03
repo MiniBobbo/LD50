@@ -3,6 +3,7 @@ import { IH } from "../IH/IH";
 import { C } from "../C";
 import { NinjaFSM } from "../FSM/NinjaFSM";
 import { NinjaAppearFSM } from "../FSM/NinjaAppearFSM";
+import { CustomEvents } from "../enum/CustomEvents";
 
 export class Player extends Entity {
 
@@ -18,8 +19,16 @@ export class Player extends Entity {
         this.fsm.addModule('ninja', new NinjaFSM(this));
         this.fsm.addModule('appear', new NinjaAppearFSM(this));
 
+        this.gs.events.on(CustomEvents.LEVEL_COMPLETE, this.Disappear, this);
+
 
         this.fsm.changeModule('appear');
+    }
+
+    Disappear() {
+        this.Dead();
+
+        
     }
 
     Update(time:number, dt:number) {

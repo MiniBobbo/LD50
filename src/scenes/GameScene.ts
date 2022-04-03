@@ -7,18 +7,25 @@ import { LDtkMapPack, LdtkReader } from "../map/LDtkReader";
 import { MapHelper } from "../helpers/MapHelper";
 import { CustomEvents } from "../enum/CustomEvents";
 import { WinConditions } from "../WinConditions";
+import { Display } from "phaser";
 
 export class GameScene extends Phaser.Scene {
     initRun:boolean = false;
 
     ih!:IH;
     realLayer:Phaser.GameObjects.Layer;
-    outlineLayer:Phaser.GameObjects.Layer;
-    realMask:Phaser.GameObjects.RenderTexture;
-    LightObjects:Phaser.GameObjects.Container;
+    // outlineLayer:Phaser.GameObjects.Layer;
+    HudLayer:Phaser.GameObjects.Layer;
+    // realMask:Phaser.GameObjects.RenderTexture;
+    // LightObjects:Phaser.GameObjects.Container;
     PointerOffset:{x:number, y:number};
     cursor:Phaser.GameObjects.Image;
 
+    effects:Phaser.GameObjects.Group;
+
+    DisplayText:Phaser.GameObjects.Text;
+    Timer:Phaser.GameObjects.Text;
+    ElapsedTime:number;
 
     maps:LDtkMapPack;
 
@@ -57,6 +64,11 @@ export class GameScene extends Phaser.Scene {
         // this.GoalText = this.add.bitmapText(10,230, '6px', this.Win.GoalText).setDepth(2000).setFontSize(10).setScrollFactor(0);
 
         this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(6).setScrollFactor(0);
+        this.DisplayText = this.add.text(0, 100, 'Ready...', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
+        .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
+        .setFontSize(40).setWordWrapWidth(250);
+        this.HudLayer.add(this.DisplayText);
+
 
         this.CreateListeners();
         this.events.once('shutdown', this.RemoveListeners, this);
@@ -65,33 +77,39 @@ export class GameScene extends Phaser.Scene {
         
         this.cameras.main.startFollow(this.p.sprite);
         this.cameras.main.setBounds(0,0, this.maps.collideLayer.width, this.maps.collideLayer.height);
-        // this.physics.add.collider(this.collideMap, belowLayer);
-        // this.physics.add.overlap(this.e.sprite, this.zones, (sprite:Phaser.Physics.Arcade.Sprite, z:Phaser.GameObjects.Zone) => {
-        //     z.emit('overlap', sprite);
-            // console.log(`Hit zone ${z.name}`);
-        // });
 
-
-        // this.effects = this.add.group({
-        //     classType:Phaser.GameObjects.Sprite
-        // });
+        this.effects = this.add.group({
+            classType:Phaser.GameObjects.Sprite
+        });
         
-        // let prop = this.map.properties as Array<{name:string, type:string, value:any}>;
-        // let ambient = prop.find((e:any) =>{return e.name == 'ambient'});
-
         // this.events.on('effect', this.Effect, this);
-        // this.e.sprite.on('dead', this.PlayerDied, this);
+        this.p.sprite.on(CustomEvents.LEVEL_FAILED, this.PlayerDied, this);
         // this.events.on('travel', () => { this.e.fsm.clearModule(); this.cameras.main.fadeOut(200, 0,0,0,(cam:any, progress:number) => { if(progress == 1) this.scene.restart();}); }, this);
         // this.CreateZones();
 
         this.cameras.main.setRoundPixels(true);
         this.cameras.main.fadeIn(300);
 
+        this.tweens.add({
+            targets:this.DisplayText,
+            alpha:0,
+            duration:900,
+
+        });
+
         this.time.addEvent({
             delay:1000,
             callbackScope:this,
             callback:() => {
                 this.events.emit(CustomEvents.LEVEL_START);
+                this.DisplayText.setAlpha(1).setText("GO").setTint(0xff0000).setFontSize(50);
+                this.tweens.add({
+                    targets:this.DisplayText,
+                    alpha:0,
+                    duration:400,
+        
+                });
+        
             }
 
         });
@@ -152,16 +170,18 @@ export class GameScene extends Phaser.Scene {
     private CreateBaseObjects() {
         this.PointerOffset = { x: 0, y: 0 };
         this.realLayer = this.add.layer().setDepth(100);
-        this.outlineLayer = this.add.layer().setDepth(50);
-        this.realMask = this.add.renderTexture(0, 0, 250, 250);
-        this.LightObjects = this.add.container(0, 0);
+        // this.outlineLayer = this.add.layer().setDepth(50);
+        // this.realMask = this.add.renderTexture(0, 0, 250, 250);
+        // this.LightObjects = this.add.container(0, 0);
+        this.HudLayer = this.add.layer().setDepth(1000);
 
 
         this.cursor = this.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0);
+        this.HudLayer.add(this.cursor);
 
         // this.realLayer.add(this.add.image(0, 0, 'mockup_0').setOrigin(0, 0));
         // this.outlineLayer.add(this.add.image(0, 0, 'mockup_1').setOrigin(0, 0));
-        this.realLayer.mask = new Phaser.Display.Masks.BitmapMask(this, this.LightObjects);
+        // this.realLayer.mask = new Phaser.Display.Masks.BitmapMask(this, this.LightObjects);
 
     }
 
@@ -193,10 +213,10 @@ export class GameScene extends Phaser.Scene {
         this.debugText.text = '';
         this.Win.update();
 
-        this.realMask.clear();
+        // this.realMask.clear();
         // this.realMask.fill(0x000000);
         
-        this.realMask.draw(this.LightObjects);
+        // this.realMask.draw(this.LightObjects);
 
         if(this.ih.IsJustPressed('event')) {
             // this.events.emit('unlock');

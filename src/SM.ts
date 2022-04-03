@@ -10,7 +10,9 @@ export class SM {
         if(m != '') {
             if(this.currentSong != null)
                 this.scene.sound.stopByKey(this.currentSong);
-            this.scene.sound.play(m);
+            this.scene.sound.play(m, {
+                loop:true
+            });
             this.currentSong = m;
         }
     }

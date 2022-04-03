@@ -13,6 +13,8 @@ export class MainMenuScene extends Phaser.Scene {
     cursor:Phaser.Physics.Arcade.Image;
 
     buttons:Phaser.Physics.Arcade.Group;
+    bg1:Phaser.GameObjects.TileSprite;
+    bg2:Phaser.GameObjects.TileSprite;
 
     create() {
         if(C.gd == null) {
@@ -25,6 +27,10 @@ export class MainMenuScene extends Phaser.Scene {
             SM.PlayMusic(Music.SLAP_THAT_NINJA);
         }
 
+        this.bg2 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_1').setOrigin(0,0);
+        this.bg1 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_0').setOrigin(0,0);
+        let ninja = this.add.sprite(125, 190, 'atlas').play('ninja_run');
+
 
         if(this.scene.get('game')!= null)
             this.scene.remove('game');
@@ -34,8 +40,10 @@ export class MainMenuScene extends Phaser.Scene {
 
         this.PointerOffset = {x:0, y:0};
 
-        this.Title = this.add.text(120,30, 'Revenge is Inevitable').setFontSize(16).setWordWrapWidth(240).setOrigin(.5,0);
-
+        // this.Title = this.add.text(120,30, 'Revenge is Inevitable').setFontSize(16).setWordWrapWidth(240).setOrigin(.5,0);
+        let title = this.add.text(0,20,'Revenge is Inevitable', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+        .setFixedSize(250,0).setDepth(500)
+        .setFontSize(26).setWordWrapWidth(250);
         // this.StartButton = this.CreateButton('Level 0', this.StartGame).setPosition(30,50);
         // this.EraseButton = this.CreateButton('Erase Saved Data', this.EraseSaves).setPosition(200,200);
         this.EraseButton = this.CreateButton('Change\nMusic', this.CycleMusic, 10).setPosition(200,220);
@@ -114,7 +122,8 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     update(time:number, dt:number) {
-
+        this.bg1.tilePositionX += 5;
+        this.bg2.tilePositionX += 3;
     }
 
     CreateButton(text:string, callback:any, textSize:number = 12):Phaser.GameObjects.Container {

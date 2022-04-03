@@ -8,7 +8,7 @@ export class Flag extends Entity {
         super(scene, ih);
         // this.gs.collideMap.push(this.sprite);
         this.sprite.setSize(20,20);
-        this.sprite.setDepth(1000);
+        this.sprite.setDepth(100);
         // this.sprite.setOffset(1,0);
         this.sprite.name = 'flag';
         this.sprite.setGravityY(C.GRAVITY);

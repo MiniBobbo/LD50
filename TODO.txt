@@ -15,13 +15,14 @@ MVP
 Sprint 2
 * Ninja Animations
 Level Start Transitions
-Tileset for forest complete
+Tileset 1 complete
 * Soldiers that can be killed
 * Victory condition about killing soldiers
 Level Complete Transitions
 * Level 2 Complete
-Main Menu pretty
-Load Web Fonts
+* Main Menu pretty
+* Load Web Fonts
+* Cursor behind flag.  Fix the order of stuff with layers.
 
 Sprint 3
 Throwing stars added.
@@ -33,3 +34,9 @@ Reposition the cursor to where it was in the previous scene
 Animations
 Ninja jumping
 Ninja appear
+
+
+Depths
+50 - Maps
+100 - Entities
+200 - HUD 

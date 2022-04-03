@@ -9,7 +9,7 @@ export class Soldier extends Entity {
         // this.gs.collideMap.push(this.sprite);
         this.sprite.setSize(12,14);
         // this.sprite.setOffset(1,0);
-        this.sprite.name = 'ninja';
+        this.sprite.name = 'soldier';
         this.sprite.setGravityY(C.GRAVITY);
         // this.sprite.setDepth(5);
         this.PlayAnimation('stand');

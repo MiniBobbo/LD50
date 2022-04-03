@@ -1,7 +1,10 @@
 import { IH } from "../IH/IH";
 
 export class Preload extends Phaser.Scene {
+    LoadCount:number = 0;
     preload() {
+        this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
@@ -59,7 +62,7 @@ export class Preload extends Phaser.Scene {
             percentText.destroy();
             assetText.destroy();
             //@ts-ignore
-            this.scene.start('menu');
+            this.Finished();
         }, this);
     
         this.load.setBaseURL('./assets/')
@@ -81,6 +84,17 @@ export class Preload extends Phaser.Scene {
 
 
     create() {
+
+        //@ts-ignore
+        WebFont.load({
+            google: {
+                families: [ 'Yeon Sung' ]
+                },
+            active: () =>{
+                this.Finished();
+            },
+            
+        });
         IH.AddVirtualInput('up');
         IH.AddVirtualInput('down');
         IH.AddVirtualInput('left');
@@ -119,6 +133,11 @@ export class Preload extends Phaser.Scene {
         // this.anims.create({ key: 'player_jumpup', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpup_', end: 0}), repeat: -1 });
         // this.anims.create({ key: 'player_jumpdown', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpdown_', end: 3}), repeat: 0 });
 
+    }
+    Finished() {
+        this.LoadCount++;
+        if(this.LoadCount == 2)
+            this.scene.start('menu');
     }
 
     private CreateAnimSet(key:string, prefix:string, end:number, repeat:number, frameRate:number = 20, padding:number = 0) {
