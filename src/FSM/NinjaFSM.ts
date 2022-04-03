@@ -27,20 +27,6 @@ export class NinjaFSM extends FSMModule {
         this.p.sprite.setGravity(0, 0);
         this.dir = D.D;
 
-        
-
-        // let spdx = this.p.sprite.body.velocity.x;
-        // let spdy = this.p.sprite.body.velocity.y;
-        
-        // if(spdx > 0)
-        //     this.p.sprite.flipX == false;
-        // else
-        //     this.p.sprite.flipX == true;
-
-        // if(Math.abs(spdx) > spdy)
-        //     this.p.PlayAnimation('jump_side');
-        // else
-        //     this.p.PlayAnimation('jump_up');
     }
 
     moduleEnd(args: any): void {
@@ -110,6 +96,7 @@ export class NinjaFSM extends FSMModule {
     Jump(cpos:{x:number, y:number}) {
         // this.gs.cursor.y | this.p.sprite.y
 
+        console.log('jump');
         SM.PlaySFX(SFX.NinjaJump);
         let a = Phaser.Math.Angle.BetweenPoints(this.gs.p.sprite, cpos);
         let v = new Phaser.Math.Vector2(C.NINJA_JUMP_STR, 0);
@@ -122,10 +109,12 @@ export class NinjaFSM extends FSMModule {
             this.p.sprite.flipX = false;
         else 
             this.p.sprite.flipX = true;
-        if(Math.abs(v.x) > v.y) {
+        if(Math.abs(v.x) > Math.abs(v.y)) {
             this.p.PlayAnimation('jump_side');
-        } else
+        } else {
             this.p.PlayAnimation('jump_up');
+
+        }
 
 
     }
@@ -135,11 +124,16 @@ export class NinjaFSM extends FSMModule {
      */
     Run() {
         this.running = true;
+        this.p.PlayAnimation('run');
         this.p.sprite.setGravityY(C.GRAVITY);
-        if(this.target.x > this.p.sprite.x) 
+        if(this.target.x > this.p.sprite.x) {
             this.p.sprite.setVelocityX(C.NINJA_GROUND_SPEED);
-        else    
+            this.p.sprite.flipX = false;
+        }
+        else {
             this.p.sprite.setVelocityX(-C.NINJA_GROUND_SPEED);
+            this.p.sprite.flipX = true;
+        }    
 
     }
 
@@ -148,6 +142,7 @@ export class NinjaFSM extends FSMModule {
             //Check for landing
             if(!this.p.sprite.body.blocked.none) {
                 //Landed
+                console.log('land');
                 SM.PlaySFX(SFX.NinjaLand);
                 this.p.sprite.setVelocity(0,0);
                 this.p.sprite.setGravity(0,0);
@@ -186,5 +181,6 @@ export class NinjaFSM extends FSMModule {
     StopRun() {
         this.p.sprite.setVelocityX(0);
         this.running = false;
+        this.p.PlayAnimation('crouch');
     }
 }

@@ -13,12 +13,13 @@ MVP
 * Display the goal on the screen
 
 Sprint 2
+* Ninja Animations
 Level Start Transitions
 Tileset for forest complete
-Soldiers that can be killed
-Victory condition about killing soldiers
+* Soldiers that can be killed
+* Victory condition about killing soldiers
 Level Complete Transitions
-Level 2 Complete
+* Level 2 Complete
 Main Menu pretty
 Load Web Fonts
 

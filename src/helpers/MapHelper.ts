@@ -1,5 +1,6 @@
 import { Flag } from "../entities/Flag";
 import { Player } from "../entities/Player";
+import { Soldier } from "../entities/Soldier";
 import { CustomEvents } from "../enum/CustomEvents";
 import { EntityIdentifier, LDtkMapPack, LdtkReader } from "../map/LDtkReader";
 import { GameScene } from "../scenes/GameScene";
@@ -20,7 +21,7 @@ export class MapHelper {
         this.CreateEntities(gs, solidmaps);
         this.SetPhysics(gs, solidmaps);
         gs.Win = new WinConditions(gs, solidmaps);
-        gs.add.bitmapText(10,235, '6px', gs.Win.GoalText).setScrollFactor(0,0).setDepth(1000);
+        gs.add.bitmapText(10,235, '6px', gs.Win.GoalText).setScrollFactor(0,0).setDepth(1000).setFontSize(8);
         // let outlinemaps = r.CreateMap(level, 'outlinets');
         // gs.outlineLayer.add(outlinemaps.displayLayers.find(e => e.name == 'Outline'));
 
@@ -38,6 +39,10 @@ export class MapHelper {
                 case EntityIdentifier.Flag:
                     let f = new Flag(gs, gs.ih);
                     f.sprite.setPosition(element.px[0]+10,element.px[1]+10);                    
+                    break;
+                case EntityIdentifier.Soldier:
+                    let s = new Soldier(gs, gs.ih);
+                    s.sprite.setPosition(element.px[0]+10,element.px[1]+10);                    
                     break;
                 default:
                     break;

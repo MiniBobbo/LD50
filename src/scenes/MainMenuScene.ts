@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { C } from "../C";
 import { CustomEvents } from "../enum/CustomEvents";
+import { Music, SM } from "../SM";
 import { GameScene } from "./GameScene";
 
 export class MainMenuScene extends Phaser.Scene {
@@ -18,6 +19,13 @@ export class MainMenuScene extends Phaser.Scene {
             C.gd = JSON.parse(localStorage.getItem(C.GAME_NAME));
         }
 
+        SM.Register(this);
+
+        if(SM.currentSong == null) {
+            SM.PlayMusic(Music.SLAP_THAT_NINJA);
+        }
+
+
         if(this.scene.get('game')!= null)
             this.scene.remove('game');
 
@@ -29,12 +37,13 @@ export class MainMenuScene extends Phaser.Scene {
         this.Title = this.add.text(120,30, 'Revenge is Inevitable').setFontSize(16).setWordWrapWidth(240).setOrigin(.5,0);
 
         // this.StartButton = this.CreateButton('Level 0', this.StartGame).setPosition(30,50);
-        this.EraseButton = this.CreateButton('Erase Saved Data', this.EraseSaves).setPosition(200,200);
+        // this.EraseButton = this.CreateButton('Erase Saved Data', this.EraseSaves).setPosition(200,200);
+        this.EraseButton = this.CreateButton('Change\nMusic', this.CycleMusic, 10).setPosition(200,220);
 
-        let level1 = this.CreateLevelButton('Test level', 'Getting_Started').setPosition(30, 220);
+        let level1 = this.CreateLevelButton('Level 2', 'Kill_The_Sentry').setPosition(30, 95);
         let level2 = this.CreateLevelButton('Level 1', 'Level_1').setPosition(30, 75);
 
-        // let s = this.add.sprite(100,100,'atlas').play('flag_wave');
+        // let s = this.add.sprite(100,100,'atlas').play('ninja_jump_up');
 
         this.input.on('pointerdown', (pointer) => {
             if (!this.input.mouse.locked)
@@ -80,6 +89,14 @@ export class MainMenuScene extends Phaser.Scene {
         // });
     }
 
+    CycleMusic() {
+        if(SM.currentSong == Music.Funkjutsu)
+            SM.PlayMusic(Music.SLAP_THAT_NINJA);
+        else
+            SM.PlayMusic(Music.Funkjutsu);
+
+    }
+
     Dispose() {
         this.events.removeListener(CustomEvents.PLAYER_CLICKED, this.CheckButtons, this);
     }
@@ -100,9 +117,9 @@ export class MainMenuScene extends Phaser.Scene {
 
     }
 
-    CreateButton(text:string, callback:any):Phaser.GameObjects.Container {
+    CreateButton(text:string, callback:any, textSize:number = 12):Phaser.GameObjects.Container {
         let c = this.add.container();
-        let t = this.add.text(0,0,text).setInteractive();
+        let t = this.add.text(0,0,text).setFontSize(textSize).setInteractive();
         t.on(CustomEvents.BUTTON_CLICKED, callback, this);
         c.add(t);
         this.buttons.add(t);

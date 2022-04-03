@@ -5,5 +5,7 @@ export enum CustomEvents {
     LEVEL_COMPLETE = 'levelcomplete',
     HIT_PLAYER = 'hitplayer',
     PLAYER_HIT_FLAG = 'playerhitflag',
-    BUTTON_CLICKED = 'buttonclicked'
+    PLAYER_HIT_SOLDIER = 'playerhitsoldier',
+    BUTTON_CLICKED = 'buttonclicked',
+
 }

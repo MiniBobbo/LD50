@@ -311,6 +311,7 @@ export interface TypeClass {
 export enum EntityIdentifier {
     NinjaStart = "NinjaStart",
     Flag = 'Flag',
+    Soldier = 'Soldier'
 }
 
 export interface Enum {
@@ -445,6 +446,7 @@ export enum ID {
 export enum LevelFieldIdentifier {
     Flag = "Flag",
     Level_Goal = "Level_Goal",
+    Kill_Soldiers = 'Kill_Soldiers',
 }
 
 export interface Tileset {

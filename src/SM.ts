@@ -26,7 +26,9 @@ export class SM {
 }
 
 export enum Music {
-    NONE = ''
+    NONE = '',
+    SLAP_THAT_NINJA = 'Slap That Ninja',
+    Funkjutsu = 'Funkjutsu'
 }
 
 export enum SFX {

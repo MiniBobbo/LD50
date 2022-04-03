@@ -73,6 +73,8 @@ export class Preload extends Phaser.Scene {
         // this.load.image('mockup_1');
         this.load.image('lighttest');
         this.load.json('levels', 'Levels.ldtk');
+        this.load.audio('Funkjutsu', ['./music/Funkjutsu.mp3']);
+        this.load.audio('Slap That Ninja', ['./music/Slap_That_Ninja.mp3']);
         // this.load.audio()
 
     }
@@ -108,9 +110,10 @@ export class Preload extends Phaser.Scene {
         this.CreateAnimSet('ninja_wallgrab', 'ninja_wallgrab_', 1, -1, 1);
         this.CreateAnimSet('ninja_crouch', 'ninja_idle_', 1, -1, 1);
         this.CreateAnimSet('ninja_hang', 'ninja_hang_', 1, -1, 1);
-        this.CreateAnimSet('ninja_jump_up', 'ninja_wallgrab_', 1, -1, 30);
-        this.CreateAnimSet('ninja_jump_side', 'ninja_wallgrab_', 1, -1, 30);
+        this.CreateAnimSet('ninja_jump_up', 'ninja_jump_up_', 23, 0, 60, 3);
+        this.CreateAnimSet('ninja_jump_side', 'ninja_jump_side_', 23, 0, 60, 3);
         this.CreateAnimSet('flag_wave', 'flag_wave_', 3, -1, 6);
+        this.CreateAnimSet('soldier_stand', 'soldier_stand_', 0, 0, 6);
         // this.anims.create({ key: 'player_stand', frameRate: 60, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_stand_', end: 0}), repeat: -1 });
         // this.anims.create({ key: 'player_run', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_run_', end: 7}), repeat: -1 });
         // this.anims.create({ key: 'player_jumpup', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpup_', end: 0}), repeat: -1 });
@@ -118,8 +121,8 @@ export class Preload extends Phaser.Scene {
 
     }
 
-    private CreateAnimSet(key:string, prefix:string, end:number, repeat:number, frameRate:number = 20) {
-        this.anims.create({ key: key, frameRate: frameRate, frames: this.anims.generateFrameNames('atlas', { prefix: prefix, end: end}), repeat: repeat });
+    private CreateAnimSet(key:string, prefix:string, end:number, repeat:number, frameRate:number = 20, padding:number = 0) {
+        this.anims.create({ key: key, frameRate: frameRate, frames: this.anims.generateFrameNames('atlas', { prefix: prefix, end: end, zeroPad:padding}), repeat: repeat });
         // console.log(`Creating `);
         // this.anims.create({ key: `${key}_o`, frameRate: frameRate, frames: this.anims.generateFrameNames('atlas_o', { prefix: prefix, end: end}), repeat: repeat });
         

@@ -7,6 +7,8 @@ export class WinConditions {
     TouchFlagRequired = false;
     touchingFlag:boolean = false;
     GoalText:string;
+    SoldiersKilled:number = 0;
+    SoldiersKilledRequired:number = 0;
 
 
 
@@ -22,18 +24,25 @@ export class WinConditions {
                         //@ts-ignore
                         this.GoalText = element.__value as string;
                         break;
-                
+                    case LevelFieldIdentifier.Kill_Soldiers:
+                        //@ts-ignore
+                        this.SoldiersKilledRequired = element.__value as number;
+                    break;
+
                     default:
                         break;
                 }
             });
         }
         gs.events.on(CustomEvents.PLAYER_HIT_FLAG, () => {this.touchingFlag = true;}, this);
+        gs.events.on(CustomEvents.PLAYER_HIT_SOLDIER, () => {this.SoldiersKilled++;}, this);
     }
 
 
     CheckVictory() {
         if(this.TouchFlagRequired && !this.touchingFlag)
+        return false;
+        if(this.SoldiersKilled < this.SoldiersKilledRequired)
         return false;
 
         return true;

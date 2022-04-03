@@ -19,6 +19,7 @@ export class GameScene extends Phaser.Scene {
     PointerOffset:{x:number, y:number};
     cursor:Phaser.GameObjects.Image;
 
+
     maps:LDtkMapPack;
 
     debugText:Phaser.GameObjects.BitmapText;
@@ -53,7 +54,9 @@ export class GameScene extends Phaser.Scene {
         this.MouseCapture();
         MapHelper.CreateMap(this, data.levelName);
 
-        this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(10).setScrollFactor(0);
+        // this.GoalText = this.add.bitmapText(10,230, '6px', this.Win.GoalText).setDepth(2000).setFontSize(10).setScrollFactor(0);
+
+        this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(6).setScrollFactor(0);
 
         this.CreateListeners();
         this.events.once('shutdown', this.RemoveListeners, this);
