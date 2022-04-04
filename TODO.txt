@@ -26,18 +26,33 @@ Sprint 2
 * Soldier death animations
 
 Sprint 3
-Throwing stars added.
-Level 3 completed.
+* Blades Added.
+* Ninja Dies.
+* Quick Restart and Menu
+* Level 3 completed
+* Falling off bottom of level kills you
+* Level Timer
+
+Sprint 4
+Track level times on main menu
+Throwing stars added
+
+
 
 Quality of Life Improvements
-Reposition the cursor to where it was in the previous scene
+Reposition the cursor to where it was in the previous scene.
+Display quick restart and menu keys somewhere in game.
+Tips on the bottom of the screen
+
 
 Animations
 Ninja jumping
 Ninja appear
 
 
-Depths
-50 - Maps
-100 - Entities
-200 - HUD 
+Levels
+Get to the flag
+Kill the Sentry
+Enter the Warehouse
+Burn the Supplies
+

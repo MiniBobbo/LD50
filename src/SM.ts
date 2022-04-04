@@ -75,6 +75,7 @@ export enum SFX {
     NinjaLand = 'ninjaland',
     NinjaLand1 = 'ninjaland1',
     NinjaLand2 = 'ninjaland2',
+    PowerUp = 'powerup',
     Attack = '',
     StarThrow = '',
     StarHit = '',

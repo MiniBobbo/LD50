@@ -13,7 +13,7 @@ export class Entity {
 
     constructor(scene:Phaser.Scene, ih:IH) {
         this.gs = scene as GameScene;
-        this.sprite = scene.physics.add.sprite(0,0, 'atlas')
+        this.sprite = scene.physics.add.sprite(0,0, 'atlas', 'cursor_0')
         this.sprite.setSize(16,16);
         this.scene = scene;
         this.sprite.name = '';

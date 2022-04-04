@@ -1,3 +1,5 @@
+import { C } from "../C";
+import { GameData } from "../GameData";
 import { IH } from "../IH/IH";
 
 export class Preload extends Phaser.Scene {
@@ -76,6 +78,7 @@ export class Preload extends Phaser.Scene {
         // this.load.image('mockup_1');
         this.load.image('lighttest');
         this.load.json('levels', 'Levels.ldtk');
+        this.load.audio('powerup', ['./sounds/Powerup.wav']);
         this.load.audio('slice1', ['./sounds/Slash_Enemy_Kill.wav']);
         this.load.audio('slice2', ['./sounds/Slash_Enemy_Kill_2.wav']);
         this.load.audio('ninjadeath', ['./sounds/Player_death.wav']);
@@ -104,27 +107,33 @@ export class Preload extends Phaser.Scene {
             },
             
         });
-        IH.AddVirtualInput('up');
-        IH.AddVirtualInput('down');
-        IH.AddVirtualInput('left');
-        IH.AddVirtualInput('right');
-        IH.AddVirtualInput('jump');
-        IH.AddVirtualInput('throw');
-        IH.AddVirtualInput('attack');
+        // if(C.gd == null) {
+        //     C.gd = JSON.parse(localStorage.getItem(C.GAME_NAME));
+        //     if(C.gd == null) {
+        //         C.gd = new GameData();
+        //         localStorage.setItem(C.GAME_NAME, JSON.stringify(C.gd));
+        //     }
+        // }
 
-        IH.AssignKeyToVirtualInput('UP', 'up');
-        IH.AssignKeyToVirtualInput('DOWN', 'down');
-        IH.AssignKeyToVirtualInput('LEFT', 'left');
-        IH.AssignKeyToVirtualInput('RIGHT', 'right');
-        IH.AssignKeyToVirtualInput('W', 'up');
-        IH.AssignKeyToVirtualInput('S', 'down');
-        IH.AssignKeyToVirtualInput('A', 'left');
-        IH.AssignKeyToVirtualInput('D', 'right');
-        IH.AssignKeyToVirtualInput('Z', 'jump');
-        IH.AssignKeyToVirtualInput('L', 'jump');
-        IH.AssignKeyToVirtualInput('K', 'attack');
-        IH.AssignKeyToVirtualInput('X', 'attack');
-        IH.AssignKeyToVirtualInput('O', 'throw');
+        // if(C.TopTimes == null) {
+        //     C.TopTimes = new Map<string, number>();
+        // }
+
+        C.gd = new GameData();
+        // localStorage.clear();
+        // C.gd = JSON.parse(localStorage.getItem(C.GAME_NAME));
+        // if(C.gd == null) {
+        //     C.gd = new GameData();
+        //     localStorage.setItem(C.GAME_NAME, JSON.stringify(C.gd));
+        // }
+
+        IH.AddVirtualInput('action');
+        IH.AddVirtualInput('restart');
+        IH.AddVirtualInput('menu');
+
+        IH.AssignKeyToVirtualInput('SPACE', 'action');
+        IH.AssignKeyToVirtualInput('R', 'restart');
+        IH.AssignKeyToVirtualInput('M', 'menu');
 
         // this.anims.create({ key: 'ninja_run', frameRate: 60, frames: this.anims.generateFrameNames('atlas', { prefix: 'ninja_running_', end: 5}), repeat: -1 });
         this.CreateAnimSet('ninja_appear', 'ninja_disappear_', 3, 0, 12);

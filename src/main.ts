@@ -4,6 +4,7 @@ import { GameScene } from "./scenes/GameScene";
 import { C } from "./C";
 import { GameData } from "./GameData";
 import { MainMenuScene } from "./scenes/MainMenuScene";
+import { RestartScene } from "./scenes/RestartScene";
 
 
 class Main extends Phaser.Game {
@@ -30,12 +31,10 @@ class Main extends Phaser.Game {
     };
     super(config);
 
-    // this.scene.add("boot", Boot, false);
     this.scene.add("preload", Preload, false);
     this.scene.add("game", GameScene, false);
-    // this.scene.add("test", TestScene, false);
+    this.scene.add("restart", RestartScene, false);
     this.scene.add("menu", MainMenuScene, false);
-    // this.scene.add("collide", CollideScene, false)
     this.scene.start("preload");
     // C.gd = new GameData();
     // C.setFlag('5', true);

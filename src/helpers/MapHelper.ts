@@ -1,3 +1,4 @@
+import { Blade } from "../entities/Blade";
 import { Flag } from "../entities/Flag";
 import { Player } from "../entities/Player";
 import { Soldier } from "../entities/Soldier";
@@ -37,7 +38,7 @@ export class MapHelper {
     private static CreateEntities(gs:GameScene, level:LDtkMapPack) {
         let startlocation = level.entityLayers.entityInstances.find(e=>e.__identifier == 'NinjaStart');
         gs.p = new Player(gs, gs.ih);
-        gs.p.sprite.setPosition(startlocation.px[0], startlocation.px[1]);
+        gs.p.sprite.setPosition(startlocation.px[0], startlocation.px[1]).setDepth(50);
         gs.collideMap.push(gs.p.sprite);
         gs.realLayer.add(gs.p.sprite);
 
@@ -52,6 +53,11 @@ export class MapHelper {
                     let s = new Soldier(gs, gs.ih);
                     s.sprite.setPosition(element.px[0]+10,element.px[1]+10);      
                     gs.realLayer.add(s.sprite);              
+                    break;
+                case EntityIdentifier.Blade:
+                    let b = new Blade(gs, gs.ih);
+                    b.sprite.setPosition(element.px[0],element.px[1]).setDepth(49);
+                    gs.realLayer.add(b.sprite);              
                     break;
                 default:
                     break;

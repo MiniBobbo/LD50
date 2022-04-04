@@ -1,17 +1,14 @@
 import { GameData } from "./GameData";
 
 export class C {
-    static currentLevel:string = 'testlevel';
-    static previouslevel:string = 'start';
-    static waypoint:string = '';
+    static currentLevel:string = '';
 
     static MOUSE_SENSITIVITY:number = .5;
     static GAME_WIDTH:number = 250;
 
     static cursorFrame:string = 'cursor_4';
 
-
-    static TILE_SIZE:number = 16;
+    static TILE_SIZE:number = 20;
     static GRAVITY:number = 800;
 
     // static GRAVITY:number = 1000;
@@ -31,12 +28,6 @@ export class C {
         return {x:newX, y:newY};
     }
 
-    static checkFlag(flag:string):boolean {
-        //@ts-ignore
-        return this.gd.flags[flag];
-    }
-    static setFlag(flag:string, value:boolean) {
-        //@ts-ignore
-        this.gd.flags[flag] = value;
-    }
+    
+
 }

@@ -8,6 +8,7 @@ import { MapHelper } from "../helpers/MapHelper";
 import { CustomEvents } from "../enum/CustomEvents";
 import { WinConditions } from "../WinConditions";
 import { Display } from "phaser";
+import { GameData } from "../GameData";
 
 export class GameScene extends Phaser.Scene {
     initRun:boolean = false;
@@ -26,6 +27,9 @@ export class GameScene extends Phaser.Scene {
     DisplayText:Phaser.GameObjects.Text;
     Timer:Phaser.GameObjects.Text;
     ElapsedTime:number;
+    TimerStart:boolean = false;
+
+    gd:GameData;
 
     maps:LDtkMapPack;
 
@@ -35,6 +39,7 @@ export class GameScene extends Phaser.Scene {
 
     Win:WinConditions;
 
+    
 
     //Entity variables 
     p:Player;
@@ -55,6 +60,12 @@ export class GameScene extends Phaser.Scene {
         if(!this.initRun) {
             this.init();
         }
+
+        this.ElapsedTime = 0;
+        this.TimerStart = false;
+
+
+        C.currentLevel = data.levelName;
         this.collidePlayer.clear();
         this.collideMap = [];
         this.CreateBaseObjects();
@@ -74,7 +85,6 @@ export class GameScene extends Phaser.Scene {
         this.events.once('shutdown', this.RemoveListeners, this);
 
         // l.setCollision([1,2]);
-        
         this.cameras.main.startFollow(this.p.sprite);
         this.cameras.main.setBounds(0,0, this.maps.collideLayer.width, this.maps.collideLayer.height);
 
@@ -84,8 +94,6 @@ export class GameScene extends Phaser.Scene {
         
         this.events.on('effect', this.Effect, this);
         this.p.sprite.on(CustomEvents.LEVEL_FAILED, this.PlayerDied, this);
-        // this.events.on('travel', () => { this.e.fsm.clearModule(); this.cameras.main.fadeOut(200, 0,0,0,(cam:any, progress:number) => { if(progress == 1) this.scene.restart();}); }, this);
-        // this.CreateZones();
 
         this.cameras.main.setRoundPixels(true);
         this.cameras.main.fadeIn(300);
@@ -103,16 +111,20 @@ export class GameScene extends Phaser.Scene {
             callback:() => {
                 this.events.emit(CustomEvents.LEVEL_START);
                 this.DisplayText.setAlpha(1).setText("GO").setTint(0xff0000).setFontSize(50);
+                this.TimerStart = true;
                 this.tweens.add({
                     targets:this.DisplayText,
                     alpha:0,
                     duration:400,
         
                 });
-        
             }
-
         });
+
+        this.Timer = this.add.text(0, 230, '0', {fontFamily: '"Yeon Sung", "Arial"'})        
+        .setTint(0xffffff).setScrollFactor(0,0).setStroke('0#000', 3)
+        .setFontSize(12);
+        this.HudLayer.add(this.Timer);
     }
     Effect(arg0: string, Effect: any, arg2: this) {
         throw new Error("Method not implemented.");
@@ -155,15 +167,31 @@ export class GameScene extends Phaser.Scene {
         this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
         this.events.on(CustomEvents.CHECK_LEVEL_COMPLETE, ()=> {if(this.Win.CheckVictory()) this.events.emit(CustomEvents.LEVEL_COMPLETE);});
         this.events.on(CustomEvents.LEVEL_COMPLETE, () => {
+            let complete = this.add.text(0, 100, 'Complete', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
+            .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
+            .setFontSize(40).setWordWrapWidth(250).setStroke('0#000', 3);
+            this.HudLayer.add(complete);
+            this.TimerStart = false;
             
+            // if(!C.gd.CheckTimeForRecord() || this.ElapsedTime/1000 < this.gd.LevelTimes.get(C.currentLevel)) {
+            // if(this.gd.CheckTimeForRecord()) {
+                    // this.gd.LevelTimes.set(C.currentLevel, this.ElapsedTime/1000);
+                    // localStorage.setItem(C.GAME_NAME, JSON.stringify(this));
+                    // let complete = this.add.text(0, 145, '*** New Record ***', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
+                    // .setFixedSize(250,0).setTint(0xff0000).setScrollFactor(0,0)
+                    // .setFontSize(24).setWordWrapWidth(250).setStroke('0#000', 3);
+                    // this.HudLayer.add(complete);
+                // } 
+        
+
             this.time.addEvent({
                 delay:2000,
                 callbackScope:this, 
                 callback:() => {this.scene.start('menu');}
             });
-            
-        
         });
+        this.events.on(CustomEvents.PLAYER_DIED, this.PlayerDied, this);
+
 
     }
 
@@ -197,33 +225,28 @@ export class GameScene extends Phaser.Scene {
 
     }
 
-    /**
-     * remove the listeners of all the events creted in create() or they will fire multiple times.  
-     */
-    // ShutDown() {
-    //     this.events.removeListener('shutdown');
-    //     this.events.removeListener('debug');
-    //     this.events.removeListener('travel');
-    //     this.events.removeListener('effect');
-    //     this.events.removeListener('pointerup');
-    // }
-
-    // Effect(data:{name:string, x:number, y:number}) {
-    //     let e:Phaser.GameObjects.Sprite = this.effects.getFirstDead(true, 100,100,'atlas');
-    //     e.setActive(true);
-    //     e.setDepth(55);
-    //     e.visible = true;
-    //     switch (data.name) {
-    //         default:
-    //             break;
-    //     }
-
-    // }
 
     update(time:number, dt:number) {
         this.ih.update();
         this.debugText.text = '';
         this.Win.update();
+
+        if(this.ih.IsJustPressed('menu')) {
+            this.scene.start('menu');
+        }
+        if(this.ih.IsJustPressed('restart')) {
+            this.scene.start('restart');
+        }
+
+        if(this.p.sprite.active && this.p.sprite.y > this.maps.collideLayer.height) {
+            this.p.sprite.y = this.maps.collideLayer.height;
+            this.events.emit(CustomEvents.PLAYER_DIED);
+        }
+
+        if(this.TimerStart) {
+            this.ElapsedTime += dt;
+            this.Timer.text = (this.ElapsedTime/1000).toFixed(2);
+        }
 
         // this.realMask.clear();
         // this.realMask.fill(0x000000);
@@ -240,38 +263,6 @@ export class GameScene extends Phaser.Scene {
 
     }
 
-    CreateZones() {
-        // this.map.objects[0].objects.forEach((o)=> {
-        //     switch (o.name) {
-        //         case 'travel':
-        //             let travel = new TravelZone(this, o);
-        //             this.zones.push(travel);
-        //             break;
-        //         case 'message':
-        //             let message = new MessageZone(this, o);
-        //             this.zones.push(message);
-        //             break;
-        //         case 'damage':
-        //             let dz = new DamageZone(this, o);
-        //             this.zones.push(dz);
-        //             break;
-        //         case 'powerup':
-        //             let puz = new PowerupZone(this, o);
-        //             this.zones.push(puz);
-        //             break;
-        //         case 'enemy':
-        //             EnemyFactory.CreateEnemy(this, this.ih, o);
-        //         break;
-        //         case 'cutscene':
-        //             let c= new CutsceneZone(this, o);
-        //             this.zones.push(c);
-        //         break;
-        //         default:
-        //             break;
-        //     }
-        // });
-    }
-
     GetEnemyAttack():any {
         // let a = this.enemyAttacks.find( (a:BaseAttack) => { return a.sprite.body.enable === false;})
         // if(a===undefined) {
@@ -281,18 +272,16 @@ export class GameScene extends Phaser.Scene {
         // return a;
     }
         
-    GetPlayerAttack(type:string):any {
-        // let a = this.playerAttacks.find( (a:Phaser.Physics.Arcade.Sprite) => { return a.body.enable === false && a.name === type;})
-        // if(a===undefined) {
-        //     a = new BaseAttack(this);
-        //     this.playerAttacks.push(a);
-        //     this.playerAttackSprites.push(a.sprite)
-        // }
-        // return a;
-    }
-
     PlayerDied() {
-
+        this.time.addEvent({
+            delay:1500,
+            callbackScope:this,
+            callback:() => {
+                this.scene.start('restart');
+                this.scene.remove();
+        
+        }
+        });
     }
         
 }

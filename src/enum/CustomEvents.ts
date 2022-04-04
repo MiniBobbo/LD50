@@ -8,5 +8,6 @@ export enum CustomEvents {
     PLAYER_HIT_FLAG = 'playerhitflag',
     PLAYER_HIT_SOLDIER = 'playerhitsoldier',
     BUTTON_CLICKED = 'buttonclicked',
+    PLAYER_DIED = 'playerdied'
 
 }

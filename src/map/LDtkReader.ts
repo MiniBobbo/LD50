@@ -16,7 +16,7 @@ export class LdtkReader {
         var levels = j.levels;
         let level:Level = levels.find((l: any) => l.identifier === levelName);
         let mappack:LDtkMapPack = new LDtkMapPack();
-        mappack.bgColor = level.bgColor;
+        // mappack.bgColor = level.bgColor;
         mappack.settings = level.fieldInstances;
         level.layerInstances.forEach(layer => {
             if(layer.__type === 'IntGrid') {
@@ -311,7 +311,8 @@ export interface TypeClass {
 export enum EntityIdentifier {
     NinjaStart = "NinjaStart",
     Flag = 'Flag',
-    Soldier = 'Soldier'
+    Soldier = 'Soldier',
+    Blade = 'Blade'
 }
 
 export interface Enum {
@@ -447,6 +448,8 @@ export enum LevelFieldIdentifier {
     Flag = "Flag",
     Level_Goal = "Level_Goal",
     Kill_Soldiers = 'Kill_Soldiers',
+    LevelNum = 'LevelNum',
+    Level_Name = 'Level_Name'
 }
 
 export interface Tileset {

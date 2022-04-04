@@ -1,11 +1,16 @@
-import { C } from "./C";
-
 export class GameData {
-    flags:Array<boolean>;
-
+    Times:Array<LevelTimes>;
     constructor() {
-        this.flags = [];
-        // for(let i = 0; i < C.FLAG_COUNT; i++)
-        //     this.flags.push(false);
+        this.Times = [];
     }
+
+    CheckTimeForRecord() {
+        return true;
+    }
+
+}
+
+export class LevelTimes {
+    LevelName:string;
+    Time:number;
 }

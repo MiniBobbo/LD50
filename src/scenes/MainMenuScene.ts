@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { C } from "../C";
 import { CustomEvents } from "../enum/CustomEvents";
+import { GameData } from "../GameData";
+import { LdtkReader } from "../map/LDtkReader";
 import { Music, SM } from "../SM";
 import { GameScene } from "./GameScene";
 
@@ -17,15 +19,35 @@ export class MainMenuScene extends Phaser.Scene {
     bg2:Phaser.GameObjects.TileSprite;
 
     create() {
-        if(C.gd == null) {
-            C.gd = JSON.parse(localStorage.getItem(C.GAME_NAME));
-        }
 
         SM.Register(this);
 
         if(SM.currentSong == null) {
             SM.PlayMusic(Music.SLAP_THAT_NINJA);
         }
+
+        this.buttons = this.physics.add.group();
+
+        //Get all the levels:
+        let r: LdtkReader = new LdtkReader(this, this.cache.json.get('levels'));
+        let allLevels = r.ldtk.levels;
+        let levelcount = 0;
+        allLevels.forEach(element => {
+            let lbutton = this.CreateLevelButton(element.fieldInstances.find(e=>e.__identifier == 'Level_Name').__value,
+            element.identifier
+            );
+            lbutton.x = 10;
+            lbutton.y = 75 + (levelcount*20);
+            levelcount++;
+            lbutton.setDepth(1000);
+
+        }, this);
+        // let level2 = this.CreateLevelButton('Level 1', 'Level_1').setPosition(30, 75);
+        // let level1 = this.CreateLevelButton('Level 2', 'Getting_Started').setPosition(30, 95);
+        // let level3 = this.CreateLevelButton('Level 3', 'Traps').setPosition(30, 115);
+        
+
+        console.log(JSON.stringify(C.gd));
 
         this.bg2 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_1').setOrigin(0,0);
         this.bg1 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_0').setOrigin(0,0);
@@ -35,21 +57,18 @@ export class MainMenuScene extends Phaser.Scene {
         if(this.scene.get('game')!= null)
             this.scene.remove('game');
 
-        this.buttons = this.physics.add.group();
         this.cursor = this.physics.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0).setSize(2,2);
 
         this.PointerOffset = {x:0, y:0};
 
         // this.Title = this.add.text(120,30, 'Revenge is Inevitable').setFontSize(16).setWordWrapWidth(240).setOrigin(.5,0);
-        let title = this.add.text(0,20,'Revenge is Inevitable', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
-        .setFixedSize(250,0).setDepth(500)
+        let title = this.add.text(0,35,'Revenge is Inevitable', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+        .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3)
         .setFontSize(26).setWordWrapWidth(250);
         // this.StartButton = this.CreateButton('Level 0', this.StartGame).setPosition(30,50);
-        // this.EraseButton = this.CreateButton('Erase Saved Data', this.EraseSaves).setPosition(200,200);
-        this.EraseButton = this.CreateButton('Change\nMusic', this.CycleMusic, 10).setPosition(200,220);
+        this.EraseButton = this.CreateButton('Erase Times\n(Careful)', this.EraseSaves, 8).setPosition(200,0);
+        this.EraseButton = this.CreateButton('Change Music', this.CycleMusic, 10).setPosition(5,0);
 
-        let level1 = this.CreateLevelButton('Level 2', 'Kill_The_Sentry').setPosition(30, 95);
-        let level2 = this.CreateLevelButton('Level 1', 'Level_1').setPosition(30, 75);
 
         // let s = this.add.sprite(100,100,'atlas').play('ninja_jump_up');
 
@@ -128,7 +147,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     CreateButton(text:string, callback:any, textSize:number = 12):Phaser.GameObjects.Container {
         let c = this.add.container();
-        let t = this.add.text(0,0,text).setFontSize(textSize).setInteractive();
+        let t = this.add.text(0,0,text, {fontFamily: '"Yeon Sung", "Arial"'}).setFontSize(textSize).setInteractive().setStroke('0#000', 3);
         t.on(CustomEvents.BUTTON_CLICKED, callback, this);
         c.add(t);
         this.buttons.add(t);
@@ -137,7 +156,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     CreateLevelButton(levelName:string, levelID:string, width:number = 50, height:number = 50):Phaser.GameObjects.Container {
         let c = this.add.container().setSize(width, height);
-        let t = this.add.text(0,0,levelName).setInteractive();
+        let t = this.add.text(0,0,levelName, {fontFamily: '"Yeon Sung", "Arial"'}).setInteractive().setStroke('0#000', 3).setFontSize(12);
         t.once(CustomEvents.BUTTON_CLICKED, () => {
             this.scene.add('game', GameScene);
             this.scene.start('game', {levelName:levelID});

@@ -4,13 +4,14 @@ import { C } from "../C";
 import { NinjaFSM } from "../FSM/NinjaFSM";
 import { NinjaAppearFSM } from "../FSM/NinjaAppearFSM";
 import { CustomEvents } from "../enum/CustomEvents";
+import { textChangeRangeIsUnchanged } from "typescript";
 
 export class Player extends Entity {
 
     constructor(scene:Phaser.Scene, ih:IH) {
         super(scene, ih);
         // this.gs.collideMap.push(this.sprite);
-        this.sprite.setSize(12,14);
+        this.sprite.setSize(12,14).setDepth(100);
         // this.sprite.setOffset(1,0);
         this.sprite.name = 'ninja';
         this.sprite.setGravityY(C.GRAVITY);
@@ -20,6 +21,7 @@ export class Player extends Entity {
         this.fsm.addModule('appear', new NinjaAppearFSM(this));
 
         this.gs.events.on(CustomEvents.LEVEL_COMPLETE, this.Disappear, this);
+        this.gs.events.on(CustomEvents.PLAYER_DIED, this.NinjaLoss, this);
 
 
         this.fsm.changeModule('appear');
@@ -41,8 +43,15 @@ export class Player extends Entity {
             }
 
         });
+    }
 
-        
+    NinjaLoss() {
+        this.Dead();
+        let spin = this.gs.physics.add.image(this.sprite.body.x, this.sprite.body.y, 'atlas', 'ninja_dead_0').setDepth(51).setOffset(16,16);
+        this.gs.realLayer.add(spin);
+        this.gs.events.on('update', () => {spin.angle += 5;});
+        spin.setGravityY(C.GRAVITY)
+        .setVelocity(Phaser.Math.Between(-10,10), -150);
     }
 
     Update(time:number, dt:number) {
