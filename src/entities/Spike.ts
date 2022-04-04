@@ -1,17 +1,35 @@
 import { C } from "../C";
 import { CustomEvents } from "../enum/CustomEvents";
+import { D } from "../enum/Direction";
 import { IH } from "../IH/IH";
 import { SFX, SM } from "../SM";
 import { Entity } from "./Entity";
 
 export class Spike extends Entity {
-    constructor(scene:Phaser.Scene, ih:IH) {
+    constructor(scene:Phaser.Scene, ih:IH, direction:D) {
         super(scene, ih);
-        this.sprite.setSize(20,10);
+        if(direction == D.U || direction == D.D)
+            this.sprite.setSize(20,10);
+        else
+            this.sprite.setSize(10,20);
+
         // this.sprite.setOffset(1,0);
         this.sprite.name = 'spike';
         this.sprite.setFrame('spikes_0');
         this.sprite.setOffset(1,0);
+        if(direction == D.L) {
+            this.sprite.angle = 90;
+            this.sprite.setOffset(4,-5);
+        }
+        else if(direction == D.R) {
+            this.sprite.angle = 270;
+            this.sprite.setOffset(6,-5);
+        } else if(direction == D.U) {
+            this.sprite.angle = 180;
+        }   
+
+
+
         
         // this.sprite.setGravityY(C.GRAVITY);
         // this.sprite.setDepth(5);

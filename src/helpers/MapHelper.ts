@@ -1,11 +1,14 @@
 import { Blade } from "../entities/Blade";
+import { Dropper } from "../entities/Dropper";
 import { Flag } from "../entities/Flag";
 import { NinjaStar } from "../entities/Ninjastar";
 import { Player } from "../entities/Player";
 import { SmallBlade } from "../entities/SmallBlade";
 import { Soldier } from "../entities/Soldier";
 import { Spike } from "../entities/Spike";
+import { Supplies } from "../entities/Supplies";
 import { CustomEvents } from "../enum/CustomEvents";
+import { D } from "../enum/Direction";
 import { EntityIdentifier, LDtkMapPack, LdtkReader } from "../map/LDtkReader";
 import { GameScene } from "../scenes/GameScene";
 import { WinConditions } from "../WinConditions";
@@ -47,10 +50,20 @@ export class MapHelper {
 
         level.entityLayers.entityInstances.forEach(element => {
             switch (element.__identifier) {
+                case EntityIdentifier.Dropper:
+                    let drop = new Dropper(gs, element.px[0],element.px[1]);
+                    // f.sprite.setPosition(element.px[0]+10,element.px[1]+10);   
+                    // gs.realLayer.add(f.sprite);
+                    break;
                 case EntityIdentifier.Flag:
                     let f = new Flag(gs, gs.ih);
                     f.sprite.setPosition(element.px[0]+10,element.px[1]+10);   
                     gs.realLayer.add(f.sprite);
+                    break;
+                case EntityIdentifier.Supplies:
+                    let supplies = new Supplies(gs, gs.ih);
+                    supplies.sprite.setPosition(element.px[0],element.px[1]);   
+                    gs.realLayer.add(supplies.sprite);
                     break;
                 case EntityIdentifier.Soldier:
                     let s = new Soldier(gs, gs.ih);
@@ -69,8 +82,27 @@ export class MapHelper {
                     gs.realLayer.add(sb.sprite);
                     break;
                 case EntityIdentifier.GroundSpikes:
-                    let spike = new Spike(gs, gs.ih);
-                    spike.sprite.setPosition(element.px[0]+8,element.px[1]-5).setDepth(51);
+                    var direction = element.fieldInstances.find(e=>e.__identifier == 'D');
+                    let d:D = D[direction.__value as string];
+                    let spike = new Spike(gs, gs.ih, d);
+                    switch (d) {
+                        case D.D:
+                            spike.sprite.setPosition(element.px[0]+8,element.px[1]-5).setDepth(51);
+                            break;
+                        case D.U:
+                            spike.sprite.setPosition(element.px[0]+8,element.px[1]-15).setDepth(51);
+                            break;
+                        case D.L:
+                            spike.sprite.setPosition(element.px[0]+5,element.px[1]-11).setDepth(51);
+                            break;
+                        case D.R:
+                            spike.sprite.setPosition(element.px[0]+15,element.px[1]-12).setDepth(51);
+                            break;
+                        default:
+                            spike.sprite.setPosition(element.px[0]+8,element.px[1]-5).setDepth(51);
+                            break;
+                    }
+
                     gs.realLayer.add(spike.sprite);
                     break;
                 // case EntityIdentifier.Thrower:

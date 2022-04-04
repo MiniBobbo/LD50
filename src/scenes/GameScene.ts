@@ -11,6 +11,7 @@ import { Display } from "phaser";
 import { GameData } from "../GameData";
 import { Powerup } from "../enum/Powerup";
 import { NinjaStar } from "../entities/Ninjastar";
+import { SM } from "../SM";
 
 export class GameScene extends Phaser.Scene {
     initRun:boolean = false;
@@ -77,6 +78,9 @@ export class GameScene extends Phaser.Scene {
         this.CurrentPowerup = Powerup.NONE;
         this.ElapsedTime = 0;
         this.TimerStart = false;
+
+        SM.Register(this);
+
 
 
         C.currentLevel = data.levelName;
@@ -203,7 +207,7 @@ export class GameScene extends Phaser.Scene {
             this.time.addEvent({
                 delay:2000,
                 callbackScope:this, 
-                callback:() => {this.scene.start('menu');}
+                callback:() => {this.scene.start('restartmenu');}
             });
         });
         this.events.on(CustomEvents.PLAYER_DIED, this.PlayerDied, this);
@@ -230,9 +234,6 @@ export class GameScene extends Phaser.Scene {
 
     private RemoveListeners() {
         console.log('Removing all listeners!');
-        // this.events.removeListener('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
-        // this.events.removeListener(CustomEvents.CHECK_LEVEL_COMPLETE, ()=> {if(this.Win.CheckVictory()) this.events.emit(CustomEvents.LEVEL_COMPLETE);});
-        // this.events.removeListener(CustomEvents.LEVEL_COMPLETE, () => {this.scene.start('menu')});
         this.events.removeListener('debug');
         this.events.removeListener(CustomEvents.CHECK_LEVEL_COMPLETE);
         this.events.removeListener(CustomEvents.LEVEL_COMPLETE);
@@ -265,7 +266,7 @@ export class GameScene extends Phaser.Scene {
         this.Win.update();
 
         if(this.ih.IsJustPressed('menu')) {
-            this.scene.start('menu');
+            this.scene.start('restartmenu');
         }
         if(this.ih.IsJustPressed('restart')) {
             this.scene.start('restart');

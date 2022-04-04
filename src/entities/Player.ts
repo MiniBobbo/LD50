@@ -7,7 +7,7 @@ import { CustomEvents } from "../enum/CustomEvents";
 import { textChangeRangeIsUnchanged } from "typescript";
 import { dir } from "console";
 import { Dir } from "fs";
-import { D } from "../enum/Dir";
+import { D } from "../enum/Direction";
 import { SFX, SM } from "../SM";
 
 export class Player extends Entity {

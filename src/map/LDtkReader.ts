@@ -302,6 +302,7 @@ export interface DefaultOverride {
 export enum FieldDefIdentifier {
     Flag = "Flag",
     TextToWrite = 'TextToWrite',
+    D = 'D',
 }
 
 export interface TypeClass {
@@ -310,11 +311,13 @@ export interface TypeClass {
 }
 
 export enum EntityIdentifier {
+    Dropper = 'Dropper',
     SmallBlade = 'SmallBlade',
     Thrower = "Thrower",
     NinjaStar = "NinjaStar",
     NinjaStart = "NinjaStart",
     Flag = 'Flag',
+    Supplies = 'Supplies',
     Soldier = 'Soldier',
     Blade = 'Blade',
     GroundSpikes = 'GroundSpikes',
@@ -453,6 +456,7 @@ export enum ID {
 
 export enum LevelFieldIdentifier {
     Flag = "Flag",
+    Supplies = "Supplies",
     Level_Goal = "Level_Goal",
     Kill_Soldiers = 'Kill_Soldiers',
     LevelNum = 'LevelNum',

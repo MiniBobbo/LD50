@@ -1,4 +1,4 @@
-import { D } from "../enum/Dir";
+import { D } from "../enum/Direction";
 import { GameScene } from "../scenes/GameScene";
 import { Entity } from "./Entity";
 

@@ -1,7 +1,7 @@
 import { C } from "../C";
 import { Player } from "../entities/Player";
 import { CustomEvents } from "../enum/CustomEvents";
-import { D } from "../enum/Dir";
+import { D } from "../enum/Direction";
 import { GameScene } from "../scenes/GameScene";
 import { SFX, SM } from "../SM";
 import { FSMModule } from "./FSMModule";
@@ -12,7 +12,7 @@ export class NinjaFSM extends FSMModule {
     gs:GameScene;
     dir:D;
 
-    running:boolean = true;
+    running:boolean = false;
 
     moduleStart(args: any): void {
         this.p = this.parent as Player;
@@ -142,7 +142,6 @@ export class NinjaFSM extends FSMModule {
             //Check for landing
             if(!this.p.sprite.body.blocked.none) {
                 //Landed
-                console.log('land');
                 SM.PlaySFX(SFX.NinjaLand);
                 this.p.sprite.setVelocity(0,0);
                 this.p.sprite.setGravity(0,0);
@@ -168,6 +167,7 @@ export class NinjaFSM extends FSMModule {
             }
         }  else if(this.running) {
             if(!this.p.sprite.body.blocked.down) {
+                this.dir = D.None;
                 this.StopRun();
             } else if(this.p.sprite.body.velocity.x > 0 && this.p.sprite.x >= this.target.x) {
                 this.StopRun();

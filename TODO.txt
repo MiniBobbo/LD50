@@ -35,14 +35,18 @@ Sprint 3
 
 Sprint 4
 * Track level times on main menu
-Throwing stars added
-Level 4 complete
+* Spikes everywhere
+* Chapter Navigation
+* Supplies
+Chapter 1+2 complete
 
 
 Quality of Life Improvements
 Reposition the cursor to where it was in the previous scene.
 Display quick restart and menu keys somewhere in game.
 Tips on the bottom of the screen
+
+Throwing stars added
 
 
 Animations
@@ -51,8 +55,30 @@ Ninja appear
 
 
 Levels
-Get to the flag
+Chapter 1 - The Start
+I start my campaign of revenge against the foolish magisrate that destroyed my village.  First, I will burn the supplies to destroy the morale of his men. My revenge is inevitable.
+Get to the warehouse
 Kill the Sentry
-Enter the Warehouse
+The Inner Warehouse
 Burn the Supplies
 
+Chapter 2 - The Captain
+Next I take my revenge against the captain who carried out the attack.  I must find his camp and strike.
+Get location
+Travel to camp
+Kill the Sentries
+Kill the Captain silently
+
+Chapter 3 - The Mines
+I can access the magistrate's compound through the mines.  I must avoid the spirits.
+Get the key
+Enter the Mines
+Avoid the Spirits
+Climb the shaft
+
+Chapter 4 - The Revenge
+The Magistrate has bound spirits to his will!  No matter.  My revenge is inevitable. 
+Enter the keep
+Kill the guards
+Avoid the traps
+Kill the Magistrate

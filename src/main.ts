@@ -5,6 +5,7 @@ import { C } from "./C";
 import { GameData } from "./GameData";
 import { MainMenuScene } from "./scenes/MainMenuScene";
 import { RestartScene } from "./scenes/RestartScene";
+import { RestartMenuScene } from "./scenes/RestartMenuScene";
 
 
 class Main extends Phaser.Game {
@@ -13,7 +14,7 @@ class Main extends Phaser.Game {
       type: Phaser.WEBGL,
       width: 250,
       height: 250,
-      zoom:3,
+      zoom:2,
       physics: {
         default: 'arcade',
         arcade: {
@@ -34,6 +35,7 @@ class Main extends Phaser.Game {
     this.scene.add("preload", Preload, false);
     this.scene.add("game", GameScene, false);
     this.scene.add("restart", RestartScene, false);
+    this.scene.add("restartmenu", RestartMenuScene, false);
     this.scene.add("menu", MainMenuScene, false);
     this.scene.start("preload");
     // C.gd = new GameData();

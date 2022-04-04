@@ -17,6 +17,8 @@ export class C {
     static NINJA_JUMP_STR:number = 500;
     static NINJASTAR_THROW_STRENGTH = 600;
 
+    static SelectedChapter:number = 0;
+
     static gd:GameData;
 
     static GAME_NAME = 'InevitableRevenge';

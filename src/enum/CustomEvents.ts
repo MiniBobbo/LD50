@@ -6,6 +6,7 @@ export enum CustomEvents {
     LEVEL_COMPLETE = 'levelcomplete',
     HIT_PLAYER = 'hitplayer',
     PLAYER_HIT_FLAG = 'playerhitflag',
+    PLAYER_HIT_SUPPLIES = 'playerhitsupplies',
     PLAYER_HIT_SOLDIER = 'playerhitsoldier',
     BUTTON_CLICKED = 'buttonclicked',
     PLAYER_DIED = 'playerdied',

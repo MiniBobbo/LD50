@@ -37,7 +37,7 @@ export class SM {
                     this.scene.sound.play(SFX.NinjaLand2);
                     break;
                 case SFX.Woosh:
-                    let n =this.r.between(0,2);
+                    let n = Phaser.Math.Between(0,2);
                     if(n == 0)
                     this.scene.sound.play(SFX.Woosh1);
                     else if (n==1)
