@@ -34,9 +34,9 @@ Sprint 3
 * Level Timer
 
 Sprint 4
-Track level times on main menu
+* Track level times on main menu
 Throwing stars added
-
+Level 4 complete
 
 
 Quality of Life Improvements

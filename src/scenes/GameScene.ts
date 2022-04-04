@@ -173,15 +173,12 @@ export class GameScene extends Phaser.Scene {
             this.HudLayer.add(complete);
             this.TimerStart = false;
             
-            // if(!C.gd.CheckTimeForRecord() || this.ElapsedTime/1000 < this.gd.LevelTimes.get(C.currentLevel)) {
-            // if(this.gd.CheckTimeForRecord()) {
-                    // this.gd.LevelTimes.set(C.currentLevel, this.ElapsedTime/1000);
-                    // localStorage.setItem(C.GAME_NAME, JSON.stringify(this));
-                    // let complete = this.add.text(0, 145, '*** New Record ***', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
-                    // .setFixedSize(250,0).setTint(0xff0000).setScrollFactor(0,0)
-                    // .setFontSize(24).setWordWrapWidth(250).setStroke('0#000', 3);
-                    // this.HudLayer.add(complete);
-                // } 
+            if(C.gd.CheckTimeForRecord(C.currentLevel, this.ElapsedTime)) {
+                    let complete = this.add.text(0, 145, '*** New Record ***', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
+                    .setFixedSize(250,0).setTint(0xff0000).setScrollFactor(0,0)
+                    .setFontSize(24).setWordWrapWidth(250).setStroke('0#000', 3);
+                    this.HudLayer.add(complete);
+                } 
         
 
             this.time.addEvent({

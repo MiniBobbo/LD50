@@ -18,6 +18,9 @@ export class MainMenuScene extends Phaser.Scene {
     bg1:Phaser.GameObjects.TileSprite;
     bg2:Phaser.GameObjects.TileSprite;
 
+    allComplete:boolean;
+    TotalTime:number;
+
     create() {
 
         SM.Register(this);
@@ -28,6 +31,9 @@ export class MainMenuScene extends Phaser.Scene {
 
         this.buttons = this.physics.add.group();
 
+        this.allComplete = true;
+        this.TotalTime = 0;
+
         //Get all the levels:
         let r: LdtkReader = new LdtkReader(this, this.cache.json.get('levels'));
         let allLevels = r.ldtk.levels;
@@ -37,7 +43,7 @@ export class MainMenuScene extends Phaser.Scene {
             element.identifier
             );
             lbutton.x = 10;
-            lbutton.y = 75 + (levelcount*20);
+            lbutton.y = 75 + (levelcount*26);
             levelcount++;
             lbutton.setDepth(1000);
 
@@ -156,13 +162,25 @@ export class MainMenuScene extends Phaser.Scene {
 
     CreateLevelButton(levelName:string, levelID:string, width:number = 50, height:number = 50):Phaser.GameObjects.Container {
         let c = this.add.container().setSize(width, height);
-        let t = this.add.text(0,0,levelName, {fontFamily: '"Yeon Sung", "Arial"'}).setInteractive().setStroke('0#000', 3).setFontSize(12);
+        let t = this.add.text(0,0,levelName, {fontFamily: '"Yeon Sung", "Arial"'}).setInteractive().setStroke('0#000', 3).setFontSize(14).setTint(0xffffff);
         t.once(CustomEvents.BUTTON_CLICKED, () => {
             this.scene.add('game', GameScene);
             this.scene.start('game', {levelName:levelID});
 
         }, this);
         c.add(t);
+        let leveltime = C.gd.GetTime(levelID);
+        let time = this.add.text(0,14,'Best Time ', {fontFamily: '"Yeon Sung", "Arial"'}).setInteractive().setStroke('0#000', 3).setFontSize(10).setTint(0x8888ff);
+        if(leveltime == -1)
+        time.text += '---';
+        else
+        time.text += (leveltime/1000).toFixed(2);
+
+        t.once(CustomEvents.BUTTON_CLICKED, () => {
+            this.scene.add('game', GameScene);
+            this.scene.start('game', {levelName:levelID});
+        }, this);
+        c.add(time);
         this.buttons.add(t);
         return c;
     }
