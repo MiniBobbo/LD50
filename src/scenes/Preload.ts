@@ -149,6 +149,7 @@ export class Preload extends Phaser.Scene {
         this.CreateAnimSet('soldier_dead', 'soldier_dead_', 8, 0, 12);
         this.CreateAnimSet('effect_poof', 'poof_', 48, 0, 60);
         this.CreateAnimSet('effect_fire', 'fire_', 29, -1, 60);
+        this.CreateAnimSet('demon_fire', 'fire_', 29, -1, 60);
         // this.anims.create({ key: 'player_stand', frameRate: 60, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_stand_', end: 0}), repeat: -1 });
         // this.anims.create({ key: 'player_run', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_run_', end: 7}), repeat: -1 });
         // this.anims.create({ key: 'player_jumpup', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpup_', end: 0}), repeat: -1 });
@@ -159,7 +160,7 @@ export class Preload extends Phaser.Scene {
         this.LoadCount++;
         if(this.LoadCount == 2)
             // this.scene.start('menu');
-            this.scene.start('game', {levelName:'Level_9'});
+            this.scene.start('game', {levelName:'Level_5'});
     }
 
     private CreateAnimSet(key:string, prefix:string, end:number, repeat:number, frameRate:number = 20, padding:number = 0) {

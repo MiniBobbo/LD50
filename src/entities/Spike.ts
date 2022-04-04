@@ -9,23 +9,24 @@ export class Spike extends Entity {
     constructor(scene:Phaser.Scene, ih:IH, direction:D) {
         super(scene, ih);
         if(direction == D.U || direction == D.D)
-            this.sprite.setSize(20,10);
+            this.sprite.setSize(16,5);
         else
-            this.sprite.setSize(10,20);
+            this.sprite.setSize(5,16);
 
         // this.sprite.setOffset(1,0);
         this.sprite.name = 'spike';
         this.sprite.setFrame('spikes_0');
-        this.sprite.setOffset(1,0);
+        this.sprite.setOffset(3,5);
         if(direction == D.L) {
             this.sprite.angle = 90;
-            this.sprite.setOffset(4,-5);
+            this.sprite.setOffset(5,-3);
         }
         else if(direction == D.R) {
             this.sprite.angle = 270;
-            this.sprite.setOffset(6,-5);
+            this.sprite.setOffset(10,-4);
         } else if(direction == D.U) {
             this.sprite.angle = 180;
+            this.sprite.setOffset(3,-0);
         }   
 
 

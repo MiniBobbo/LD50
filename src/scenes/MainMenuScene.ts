@@ -83,6 +83,11 @@ export class MainMenuScene extends Phaser.Scene {
         this.CreateChapters(allLevels);
         this.SelectChapter(C.SelectedChapter);
 
+        this.PointerOffset.x = 125;
+        this.PointerOffset.y = 125;
+
+
+
         this.input.on('pointerdown', (pointer) => {
             if (!this.input.mouse.locked)
             {
@@ -114,9 +119,14 @@ export class MainMenuScene extends Phaser.Scene {
         this.events.on(CustomEvents.PLAYER_CLICKED, this.CheckButtons, this);
 
         if(this.allComplete) {
-            let finished = this.add.text(0,18,`Completion Time: ${(this.TotalTime/1000).toFixed(2)} seconds`, {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
-            .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3).setTint(0x0000ff)
+            let finished = this.add.text(0,18,`Best Total Time: ${(this.TotalTime/1000).toFixed(2)} seconds`, {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+            .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3).setTint(0x8888ff)
             .setFontSize(15).setWordWrapWidth(250);
+    
+        } else {
+            this.add.text(50,0,'A Ludum Dare 50 Game\nMiniBobbo (Dave) -  Art + Coding\nJamesOliverMusic - Music and SFX', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+            .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3).setTint(0x8888ff)
+            .setFontSize(9).setWordWrapWidth(250).setLineSpacing(-5);
     
         }
 

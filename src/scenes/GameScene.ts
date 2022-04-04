@@ -249,7 +249,8 @@ export class GameScene extends Phaser.Scene {
         // this.LightObjects = this.add.container(0, 0);
         this.HudLayer = this.add.layer().setDepth(1000);
 
-
+        this.PointerOffset.x = 125;
+        this.PointerOffset.y = 125;
         this.cursor = this.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0);
         this.HudLayer.add(this.cursor);
 

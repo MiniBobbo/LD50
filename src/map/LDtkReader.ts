@@ -302,6 +302,7 @@ export interface DefaultOverride {
 export enum FieldDefIdentifier {
     Flag = "Flag",
     TextToWrite = 'TextToWrite',
+    Delay = 'Delay',
     D = 'D',
 }
 
@@ -320,6 +321,7 @@ export enum EntityIdentifier {
     Supplies = 'Supplies',
     Soldier = 'Soldier',
     Blade = 'Blade',
+    Demon = 'Demon',
     GroundSpikes = 'GroundSpikes',
     Text = 'Text',
 

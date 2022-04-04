@@ -1,4 +1,5 @@
 import { Blade } from "../entities/Blade";
+import { Demon } from "../entities/Demon";
 import { Dropper } from "../entities/Dropper";
 import { Flag } from "../entities/Flag";
 import { NinjaStar } from "../entities/Ninjastar";
@@ -51,7 +52,8 @@ export class MapHelper {
         level.entityLayers.entityInstances.forEach(element => {
             switch (element.__identifier) {
                 case EntityIdentifier.Dropper:
-                    let drop = new Dropper(gs, element.px[0],element.px[1]);
+                    var delay = element.fieldInstances.find(e=>e.__identifier == 'Delay').__value as number;
+                    let drop = new Dropper(gs, element.px[0],element.px[1], delay);
                     // f.sprite.setPosition(element.px[0]+10,element.px[1]+10);   
                     // gs.realLayer.add(f.sprite);
                     break;
@@ -75,6 +77,11 @@ export class MapHelper {
                     let b = new Blade(gs, gs.ih);
                     b.sprite.setPosition(element.px[0],element.px[1]).setDepth(49);
                     gs.realLayer.add(b.sprite);
+                    break;
+                case EntityIdentifier.Demon:
+                    let demon = new Demon(gs);
+                    demon.sprite.setPosition(element.px[0],element.px[1]).setDepth(49);
+                    gs.realLayer.add(demon.sprite);
                     break;
                 case EntityIdentifier.SmallBlade:
                     let sb = new SmallBlade(gs, gs.ih);
