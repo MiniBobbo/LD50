@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { getAllJSDocTagsOfKind } from "typescript";
 import { C } from "../C";
 import { CustomEvents } from "../enum/CustomEvents";
 import { GameData } from "../GameData";
@@ -38,13 +39,20 @@ export class MainMenuScene extends Phaser.Scene {
         let r: LdtkReader = new LdtkReader(this, this.cache.json.get('levels'));
         let allLevels = r.ldtk.levels;
         let levelcount = 0;
+        let xpos = 10;
+        let ypos = 75;
         allLevels.forEach(element => {
             let lbutton = this.CreateLevelButton(element.fieldInstances.find(e=>e.__identifier == 'Level_Name').__value,
             element.identifier
             );
-            lbutton.x = 10;
-            lbutton.y = 75 + (levelcount*26);
+            lbutton.x = xpos;
+            let thisy = levelcount;
+            if(thisy > 5)
+                thisy = 0;
+            lbutton.y = 75 + (thisy*26);
             levelcount++;
+            if(levelcount > 5)
+                xpos = 150;
             lbutton.setDepth(1000);
 
         }, this);
@@ -71,6 +79,12 @@ export class MainMenuScene extends Phaser.Scene {
         let title = this.add.text(0,35,'Revenge is Inevitable', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
         .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3)
         .setFontSize(26).setWordWrapWidth(250);
+        if(this.allComplete) {
+            let finished = this.add.text(0,18,`Completion Time: ${(this.TotalTime/1000).toFixed(2)} seconds`, {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+            .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3).setTint(0xff0000)
+            .setFontSize(15).setWordWrapWidth(250);
+    
+        }
         // this.StartButton = this.CreateButton('Level 0', this.StartGame).setPosition(30,50);
         // this.EraseButton = this.CreateButton('Erase Times\n(Careful)', this.EraseSaves, 8).setPosition(200,0);
         this.EraseButton = this.CreateButton('Change Music', this.CycleMusic, 10).setPosition(5,0);
@@ -171,10 +185,15 @@ export class MainMenuScene extends Phaser.Scene {
         c.add(t);
         let leveltime = C.gd.GetTime(levelID);
         let time = this.add.text(0,14,'Best Time ', {fontFamily: '"Yeon Sung", "Arial"'}).setInteractive().setStroke('0#000', 3).setFontSize(10).setTint(0x8888ff);
-        if(leveltime == -1)
-        time.text += '---';
-        else
-        time.text += (leveltime/1000).toFixed(2);
+        if(leveltime == -1) {
+            time.text += '---';
+            this.allComplete = false;
+        }
+        else {
+            time.text += (leveltime/1000).toFixed(2);
+            this.TotalTime += leveltime;
+
+        }
 
         t.once(CustomEvents.BUTTON_CLICKED, () => {
             this.scene.add('game', GameScene);
