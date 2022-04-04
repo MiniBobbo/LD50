@@ -52,6 +52,7 @@ Sprint 6
 Grahpics for scroll
 Grahpics for key
 Graphics for Magistrate
+Remaning SFX
 
 Quality of Life Improvements
 * Reposition the cursor to where it was in the previous scene.
