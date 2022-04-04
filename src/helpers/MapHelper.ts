@@ -1,7 +1,10 @@
 import { Blade } from "../entities/Blade";
 import { Flag } from "../entities/Flag";
+import { NinjaStar } from "../entities/Ninjastar";
 import { Player } from "../entities/Player";
+import { SmallBlade } from "../entities/SmallBlade";
 import { Soldier } from "../entities/Soldier";
+import { Spike } from "../entities/Spike";
 import { CustomEvents } from "../enum/CustomEvents";
 import { EntityIdentifier, LDtkMapPack, LdtkReader } from "../map/LDtkReader";
 import { GameScene } from "../scenes/GameScene";
@@ -47,17 +50,41 @@ export class MapHelper {
                 case EntityIdentifier.Flag:
                     let f = new Flag(gs, gs.ih);
                     f.sprite.setPosition(element.px[0]+10,element.px[1]+10);   
-                    gs.realLayer.add(f.sprite);                 
+                    gs.realLayer.add(f.sprite);
                     break;
                 case EntityIdentifier.Soldier:
                     let s = new Soldier(gs, gs.ih);
                     s.sprite.setPosition(element.px[0]+10,element.px[1]+10);      
-                    gs.realLayer.add(s.sprite);              
+                    gs.realLayer.add(s.sprite);
+                    gs.entities.add(s.sprite);
                     break;
                 case EntityIdentifier.Blade:
                     let b = new Blade(gs, gs.ih);
                     b.sprite.setPosition(element.px[0],element.px[1]).setDepth(49);
-                    gs.realLayer.add(b.sprite);              
+                    gs.realLayer.add(b.sprite);
+                    break;
+                case EntityIdentifier.SmallBlade:
+                    let sb = new SmallBlade(gs, gs.ih);
+                    sb.sprite.setPosition(element.px[0],element.px[1]).setDepth(49);
+                    gs.realLayer.add(sb.sprite);
+                    break;
+                case EntityIdentifier.GroundSpikes:
+                    let spike = new Spike(gs, gs.ih);
+                    spike.sprite.setPosition(element.px[0]+8,element.px[1]-5).setDepth(51);
+                    gs.realLayer.add(spike.sprite);
+                    break;
+                // case EntityIdentifier.Thrower:
+                //     let thrower = new Thrower(gs);
+                //     ns.sprite.setPosition(element.px[0],element.px[1]).setDepth(49);
+                //     gs.realLayer.add(ns.sprite);
+                //     break;
+                case EntityIdentifier.Text:
+                    var words = element.fieldInstances.find(e=>e.__identifier == 'TextToWrite').__value as string;
+                    let t = gs.add.text(0,35,words, {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
+                    .setFixedSize(60,0).setStroke('0#000', 3)
+                    .setFontSize(8).setWordWrapWidth(60);
+                    t.setPosition(element.px[0],element.px[1]+10).setDepth(49);
+                    gs.realLayer.add(t);
                     break;
                 default:
                     break;
@@ -67,6 +94,9 @@ export class MapHelper {
 
     static SetPhysics(gs:GameScene, level:LDtkMapPack) {
         gs.physics.add.collider(gs.collideMap, level.collideLayer);
+        gs.physics.add.overlap(gs.p.sprite, gs.collidePlayer, (p:any, e:any) => {
+            e.emit(CustomEvents.HIT_PLAYER, p);
+        }); 
         gs.physics.add.overlap(gs.p.sprite, gs.collidePlayer, (p:any, e:any) => {
             e.emit(CustomEvents.HIT_PLAYER, p);
         }); 

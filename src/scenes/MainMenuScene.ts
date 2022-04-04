@@ -72,7 +72,7 @@ export class MainMenuScene extends Phaser.Scene {
         .setFixedSize(250,0).setDepth(500).setStroke('0#000', 3)
         .setFontSize(26).setWordWrapWidth(250);
         // this.StartButton = this.CreateButton('Level 0', this.StartGame).setPosition(30,50);
-        this.EraseButton = this.CreateButton('Erase Times\n(Careful)', this.EraseSaves, 8).setPosition(200,0);
+        // this.EraseButton = this.CreateButton('Erase Times\n(Careful)', this.EraseSaves, 8).setPosition(200,0);
         this.EraseButton = this.CreateButton('Change Music', this.CycleMusic, 10).setPosition(5,0);
 
 

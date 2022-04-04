@@ -5,6 +5,10 @@ import { NinjaFSM } from "../FSM/NinjaFSM";
 import { NinjaAppearFSM } from "../FSM/NinjaAppearFSM";
 import { CustomEvents } from "../enum/CustomEvents";
 import { textChangeRangeIsUnchanged } from "typescript";
+import { dir } from "console";
+import { Dir } from "fs";
+import { D } from "../enum/Dir";
+import { SFX, SM } from "../SM";
 
 export class Player extends Entity {
 
@@ -22,6 +26,17 @@ export class Player extends Entity {
 
         this.gs.events.on(CustomEvents.LEVEL_COMPLETE, this.Disappear, this);
         this.gs.events.on(CustomEvents.PLAYER_DIED, this.NinjaLoss, this);
+        this.gs.events.on(CustomEvents.PLAYER_HIT_SPIKES, () => {
+            if(this.fsm.currentModuleName == 'ninja') {
+                let f = this.fsm.currentModule as NinjaFSM;
+                if(f.dir != D.D) {
+                    SM.PlaySFX(SFX.Slice);
+                    this.gs.events.emit(CustomEvents.PLAYER_DIED);
+        
+                }
+            }
+        }, this);
+
 
 
         this.fsm.changeModule('appear');

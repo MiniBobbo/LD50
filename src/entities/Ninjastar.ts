@@ -1,32 +1,32 @@
+import { throws } from "assert";
 import { CustomEvents } from "../enum/CustomEvents";
+import { Powerup } from "../enum/Powerup";
 import { IH } from "../IH/IH";
+import { GameScene } from "../scenes/GameScene";
 import { SFX, SM } from "../SM";
 import { Entity } from "./Entity";
 
 export class NinjaStar extends Entity {
-    constructor(scene:Phaser.Scene, ih:IH) {
-        super(scene, ih);
-        // this.gs.collideMap.push(this.sprite);
-        this.sprite.setCircle(30);
-        // this.sprite.setOffset(1,0);
-        this.sprite.name = 'blade';
-        this.sprite.setFrame('blade_0').setOffset(1,1);
-        
-        // this.sprite.setGravityY(C.GRAVITY);
-        // this.sprite.setDepth(5);
-        // this.PlayAnimation('wave');
-        this.gs.collidePlayer.add(this.sprite);
+    alive:boolean = true;
+    gs!:GameScene;
+    constructor(gs:GameScene) {
+        super(gs, gs.ih);
+        this.gs = gs;
+        this.sprite.setName('ninjastar')
+        .setFrame('ninjastar_1');
         this.sprite.on(CustomEvents.HIT_PLAYER, () => {
-            SM.PlaySFX(SFX.PowerUp);
-            
+            SM.PlaySFX(SFX.Slice);
+            this.gs.events.emit(CustomEvents.PLAYER_DIED);
         });
-        this.gs.collideMap.push(this.sprite);
-        // this.gs.realLayer.add(this.sprite);
-    }
+        this.sprite.setCircle(4)
+        .setDepth(49);
+        
 
-    Update(time:number, dt:number) {
-        super.Update(time, dt);
-        this.sprite.angle += 5;
+        this.sprite.on('collide', ()=> {
+            this.alive = false;
+            this.sprite.disableBody(true, true);
+            this.sprite.setVisible(false);
+        }, this);
     }
 
 }

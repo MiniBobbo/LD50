@@ -9,6 +9,8 @@ import { CustomEvents } from "../enum/CustomEvents";
 import { WinConditions } from "../WinConditions";
 import { Display } from "phaser";
 import { GameData } from "../GameData";
+import { Powerup } from "../enum/Powerup";
+import { NinjaStar } from "../entities/Ninjastar";
 
 export class GameScene extends Phaser.Scene {
     initRun:boolean = false;
@@ -23,6 +25,11 @@ export class GameScene extends Phaser.Scene {
     cursor:Phaser.GameObjects.Image;
 
     effects:Phaser.GameObjects.Group;
+    attacks:Array<NinjaStar>;
+
+
+    CurrentPowerup:Powerup;
+    PowerupIcon:Phaser.GameObjects.Sprite;
 
     DisplayText:Phaser.GameObjects.Text;
     Timer:Phaser.GameObjects.Text;
@@ -36,6 +43,10 @@ export class GameScene extends Phaser.Scene {
     debugText:Phaser.GameObjects.BitmapText;
     collideMap!:Array<Phaser.GameObjects.GameObject>;
     collidePlayer!:Phaser.GameObjects.Group;
+    collideEntity!:Phaser.Physics.Arcade.Group;
+    entities!:Phaser.GameObjects.Group;
+
+
 
     Win:WinConditions;
 
@@ -53,6 +64,8 @@ export class GameScene extends Phaser.Scene {
     init() {
         this.initRun = true;
         this.collidePlayer = this.add.group();
+        this.collideEntity = this.physics.add.group();
+        this.entities = this.add.group();
         // this.collideMap = [];
     }
 
@@ -60,13 +73,16 @@ export class GameScene extends Phaser.Scene {
         if(!this.initRun) {
             this.init();
         }
-
+        this.attacks = [];
+        this.CurrentPowerup = Powerup.NONE;
         this.ElapsedTime = 0;
         this.TimerStart = false;
 
 
         C.currentLevel = data.levelName;
         this.collidePlayer.clear();
+        this.collideEntity.clear();
+        this.entities.clear();
         this.collideMap = [];
         this.CreateBaseObjects();
         this.MouseCapture();
@@ -79,6 +95,9 @@ export class GameScene extends Phaser.Scene {
         .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
         .setFontSize(40).setWordWrapWidth(250);
         this.HudLayer.add(this.DisplayText);
+
+        this.PowerupIcon = this.add.sprite(230, 20, 'atlas', 'ninjastar_0').setScrollFactor(0,0).setVisible(false);
+        this.HudLayer.add(this.PowerupIcon);
 
 
         this.CreateListeners();
@@ -189,6 +208,23 @@ export class GameScene extends Phaser.Scene {
         });
         this.events.on(CustomEvents.PLAYER_DIED, this.PlayerDied, this);
 
+        this.events.on(CustomEvents.POWERUP, (p:Powerup) => {
+            switch (p) {
+                case Powerup.NINJASTARS:
+                    this.CurrentPowerup = Powerup.NINJASTARS;
+                    this.PowerupIcon.setFrame('ninjastar_0').setVisible(true).setAlpha(.8);
+                    break;
+            
+                default:
+                    break;
+            }
+        });
+
+        this.physics.world.on('tilecollide', (o:Phaser.GameObjects.GameObject) => {
+            console.log(`${o.name} hit wall`);
+            o.emit('hitwall');
+        });
+
 
     }
 
@@ -235,6 +271,20 @@ export class GameScene extends Phaser.Scene {
             this.scene.start('restart');
         }
 
+        if(this.ih.IsJustPressed('action')) {
+            if(this.CurrentPowerup == Powerup.NINJASTARS) {
+                let star = this.GetNinjaStar();
+                star.setPosition(this.p.sprite.x, this.p.sprite.y).setVisible(true);
+                let cpos = {x: this.cameras.main.scrollX + this.cursor.x, y: this.cameras.main.scrollY + this.cursor.y}; 
+                let a = Phaser.Math.Angle.BetweenPoints(this.p.sprite, cpos);
+                let v = new Phaser.Math.Vector2(C.NINJASTAR_THROW_STRENGTH, 0);
+                v.rotate(a);
+                star.setVelocity(v.x, v.y);
+                star.setGravityY(C.GRAVITY);
+        
+            }
+        }
+
         if(this.p.sprite.active && this.p.sprite.y > this.maps.collideLayer.height) {
             this.p.sprite.y = this.maps.collideLayer.height;
             this.events.emit(CustomEvents.PLAYER_DIED);
@@ -250,9 +300,6 @@ export class GameScene extends Phaser.Scene {
         
         // this.realMask.draw(this.LightObjects);
 
-        if(this.ih.IsJustPressed('event')) {
-            // this.events.emit('unlock');
-        }
 
         this.events.emit('debug', `State: ${this.p.fsm.currentModuleName}`);
         // this.events.emit('debug', `P loc: ${Math.floor(this.e.sprite.body.x)},  ${Math.floor(this.e.sprite.body.y)}`);
@@ -261,13 +308,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     GetEnemyAttack():any {
-        // let a = this.enemyAttacks.find( (a:BaseAttack) => { return a.sprite.body.enable === false;})
-        // if(a===undefined) {
-        //     a = new BaseAttack(this);
-        //     this.enemyAttacks.push(a);
-        // }
-        // return a;
-    }
+            let a = this.attacks.find((a:any) => {return !a.alive;});
+            if (a==null) {
+                a = new NinjaStar(this);
+                this.realLayer.add(a.sprite);
+            }
+            return a;
+        }
         
     PlayerDied() {
         this.time.addEvent({
@@ -279,6 +326,20 @@ export class GameScene extends Phaser.Scene {
         
         }
         });
+    }
+
+    GetNinjaStar():Phaser.Physics.Arcade.Sprite {
+        let star:Phaser.Physics.Arcade.Sprite = this.collideEntity.getFirstDead(false);
+        if(star == null) {
+            star = this.physics.add.sprite(-10,-10, 'atlas', 'ninjastar_1').enableBody(true, -10,-10, true, true).setCircle(4).setOffset(6,6).setName('star');
+            this.collideEntity.add(star);
+            this.realLayer.add(star);
+            this.collideMap.push(star);
+            star.on('hitwall', () => {star.destroy();});
+
+        }
+        
+        return star;
     }
         
 }

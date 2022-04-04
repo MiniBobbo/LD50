@@ -15,6 +15,7 @@ export class C {
     static MAX_Y_SPEED:number = 500;
     static NINJA_GROUND_SPEED:number = 250;
     static NINJA_JUMP_STR:number = 500;
+    static NINJASTAR_THROW_STRENGTH = 600;
 
     static gd:GameData;
 
