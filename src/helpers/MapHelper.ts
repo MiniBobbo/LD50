@@ -2,6 +2,7 @@ import { Blade } from "../entities/Blade";
 import { Demon } from "../entities/Demon";
 import { Dropper } from "../entities/Dropper";
 import { Flag } from "../entities/Flag";
+import { Magistrate } from "../entities/Magistrate";
 import { NinjaStar } from "../entities/Ninjastar";
 import { Player } from "../entities/Player";
 import { SmallBlade } from "../entities/SmallBlade";
@@ -59,8 +60,17 @@ export class MapHelper {
                     break;
                 case EntityIdentifier.Flag:
                     let f = new Flag(gs, gs.ih);
+                    var icon = element.fieldInstances.find(e=>e.__identifier == 'Sprite').__value as number;
                     f.sprite.setPosition(element.px[0]+10,element.px[1]+10);   
                     gs.realLayer.add(f.sprite);
+                    if(icon == 1) {
+                        f.sprite.anims.stop();
+                        f.sprite.setFrame('flag_scroll_0');
+                    }
+                    else if(icon == 2) {
+                        f.sprite.anims.stop();
+                        f.sprite.setFrame('flag_key_0');
+                    }
                     break;
                 case EntityIdentifier.Supplies:
                     let supplies = new Supplies(gs, gs.ih);
@@ -72,6 +82,12 @@ export class MapHelper {
                     s.sprite.setPosition(element.px[0]+10,element.px[1]+10);      
                     gs.realLayer.add(s.sprite);
                     gs.entities.add(s.sprite);
+                    break;
+                case EntityIdentifier.Magistrate:
+                    let m = new Magistrate(gs, gs.ih);
+                    m.sprite.setPosition(element.px[0]+10,element.px[1]+10);      
+                    gs.realLayer.add(m.sprite);
+                    gs.entities.add(m.sprite);
                     break;
                 case EntityIdentifier.Blade:
                     let b = new Blade(gs, gs.ih);

@@ -1,6 +1,7 @@
 import { C } from "../C";
 import { GameData } from "../GameData";
 import { IH } from "../IH/IH";
+import { Music } from "../SM";
 
 export class Preload extends Phaser.Scene {
     LoadCount:number = 0;
@@ -43,6 +44,7 @@ export class Preload extends Phaser.Scene {
             }
         });
 
+        C.SelectedMusic = Music.Shinobi;
         assetText.setOrigin(0.5, 0.5);
         
         this.load.on('progress', function (value:any) {
@@ -78,6 +80,13 @@ export class Preload extends Phaser.Scene {
         // this.load.image('mockup_1');
         this.load.image('lighttest');
         this.load.json('levels', 'Levels.ldtk');
+        this.load.audio('disgraced', ['./sounds/DISGRACED.wav']);
+        this.load.audio('complete', ['./sounds/COMPLETE.wav']);
+        this.load.audio('boom', ['./sounds/BOOM.wav']);
+        this.load.audio('teleport', ['./sounds/TELEPORT.wav']);
+        this.load.audio('ready', ['./sounds/READY.wav']);
+        this.load.audio('go', ['./sounds/GO.wav']);
+        this.load.audio('levelstart', ['./sounds/Level_start.wav']);
         this.load.audio('powerup', ['./sounds/Powerup.wav']);
         this.load.audio('slice1', ['./sounds/Slash_Enemy_Kill.wav']);
         this.load.audio('slice2', ['./sounds/Slash_Enemy_Kill_2.wav']);
@@ -89,6 +98,7 @@ export class Preload extends Phaser.Scene {
         this.load.audio('woosh3', ['./sounds/Jump_whoosh_3.wav']);
         this.load.audio('Funkjutsu', ['./music/Funkjutsu_2.mp3']);
         this.load.audio('Slap That Ninja', ['./music/Slap_That_Ninja.mp3']);
+        this.load.audio('Shinobi', ['./music/Shinobi_2.0.mp3']);
         // this.load.audio()
 
     }LD50
@@ -147,6 +157,8 @@ export class Preload extends Phaser.Scene {
         this.CreateAnimSet('flag_wave', 'flag_wave_', 3, -1, 6);
         this.CreateAnimSet('soldier_stand', 'soldier_stand_', 0, 0, 6);
         this.CreateAnimSet('soldier_dead', 'soldier_dead_', 8, 0, 12);
+        this.CreateAnimSet('soldier_general_stand', 'soldier_general_stand_', 0, 0, 6);
+        this.CreateAnimSet('soldier_general_dead', 'soldier_gneral_dead_', 8, 0, 12);
         this.CreateAnimSet('effect_poof', 'poof_', 48, 0, 60);
         this.CreateAnimSet('effect_fire', 'fire_', 29, -1, 60);
         this.CreateAnimSet('demon_fire', 'fire_', 29, -1, 60);
@@ -159,8 +171,8 @@ export class Preload extends Phaser.Scene {
     Finished() {
         this.LoadCount++;
         if(this.LoadCount == 2)
-            // this.scene.start('menu');
-            this.scene.start('game', {levelName:'Level_5'});
+            this.scene.start('menu');
+            // this.scene.start('game', {levelName:'Level_5'});
     }
 
     private CreateAnimSet(key:string, prefix:string, end:number, repeat:number, frameRate:number = 20, padding:number = 0) {

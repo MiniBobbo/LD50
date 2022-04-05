@@ -46,7 +46,8 @@ export class MainMenuScene extends Phaser.Scene {
         SM.Register(this);
 
         if(SM.currentSong == null) {
-            SM.PlayMusic(Music.SLAP_THAT_NINJA);
+            SM.PlayMusic(Music.Shinobi);
+            C.SelectedMusic = Music.Shinobi;
         }
         this.allComplete = true;
 
@@ -259,10 +260,14 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     CycleMusic() {
+
         if(SM.currentSong == Music.Funkjutsu)
             SM.PlayMusic(Music.SLAP_THAT_NINJA);
-        else
+        else if(SM.currentSong == Music.SLAP_THAT_NINJA)
+            SM.PlayMusic(Music.Shinobi);
+            else
             SM.PlayMusic(Music.Funkjutsu);
+
 
     }
 

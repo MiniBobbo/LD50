@@ -16,7 +16,6 @@ export class Flag extends Entity {
         this.PlayAnimation('wave');
         this.gs.collidePlayer.add(this.sprite);
         this.sprite.on(CustomEvents.HIT_PLAYER, () => {
-            console.log('Player hit flag');
             this.gs.events.emit(CustomEvents.PLAYER_HIT_FLAG);
             this.gs.events.emit(CustomEvents.CHECK_LEVEL_COMPLETE);
         });

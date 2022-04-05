@@ -59,16 +59,24 @@ export class SM {
 }
 
 export enum Music {
-    NONE = '',
     SLAP_THAT_NINJA = 'Slap That Ninja',
-    Funkjutsu = 'Funkjutsu'
+    Funkjutsu = 'Funkjutsu',
+    Shinobi = 'Shinobi',
+    NONE = '',
 }
 
 export enum SFX {
+    Teleport = 'teleport',
+    Boom = 'boom',
+    Ready = 'ready',
+    Complete = 'complete',
+    Disgraced = 'disgraced',
+    Go = 'go',
     Slice = 'slice',
     Slice1 = 'slice1',
     Slice2 = 'slice2',
     Woosh = 'woosh',
+    LevelStart = 'levelstart',
     Woosh1 = 'woosh1',
     Woosh2 = 'woosh2',
     Woosh3 = 'woosh3',

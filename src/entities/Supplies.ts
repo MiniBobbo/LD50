@@ -1,6 +1,7 @@
 import { C } from "../C";
 import { CustomEvents } from "../enum/CustomEvents";
 import { IH } from "../IH/IH";
+import { SFX, SM } from "../SM";
 import { Entity } from "./Entity";
 
 export class Supplies extends Entity {
@@ -22,6 +23,7 @@ export class Supplies extends Entity {
             console.log('Player hit supplies');
             this.gs.cameras.main.flash(200, 255, 0,0);
             let fire = this.gs.add.sprite(this.sprite.body.x + 18, this.sprite.body.y-4, 'atlas').play('effect_fire').setDepth(49);
+            SM.PlaySFX(SFX.Boom);
             this.gs.realLayer.add(fire);
             this.gs.events.emit(CustomEvents.PLAYER_HIT_SUPPLIES);
             this.gs.events.emit(CustomEvents.CHECK_LEVEL_COMPLETE);

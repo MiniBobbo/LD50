@@ -11,7 +11,7 @@ import { Display } from "phaser";
 import { GameData } from "../GameData";
 import { Powerup } from "../enum/Powerup";
 import { NinjaStar } from "../entities/Ninjastar";
-import { SM } from "../SM";
+import { SFX, SM } from "../SM";
 
 export class GameScene extends Phaser.Scene {
     initRun:boolean = false;
@@ -99,6 +99,7 @@ export class GameScene extends Phaser.Scene {
         .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
         .setFontSize(40).setWordWrapWidth(250);
         this.HudLayer.add(this.DisplayText);
+        SM.PlaySFX(SFX.Ready);
 
         this.PowerupIcon = this.add.sprite(230, 20, 'atlas', 'ninjastar_0').setScrollFactor(0,0).setVisible(false);
         this.HudLayer.add(this.PowerupIcon);
@@ -134,6 +135,7 @@ export class GameScene extends Phaser.Scene {
             callback:() => {
                 this.events.emit(CustomEvents.LEVEL_START);
                 this.DisplayText.setAlpha(1).setText("GO").setTint(0xff0000).setFontSize(50);
+                SM.PlaySFX(SFX.Go);
                 this.TimerStart = true;
                 this.tweens.add({
                     targets:this.DisplayText,
@@ -190,6 +192,7 @@ export class GameScene extends Phaser.Scene {
         this.events.on('debug', (message:string) => {this.debugText.text += message + '\n';}, this);
         this.events.on(CustomEvents.CHECK_LEVEL_COMPLETE, ()=> {if(this.Win.CheckVictory()) this.events.emit(CustomEvents.LEVEL_COMPLETE);});
         this.events.on(CustomEvents.LEVEL_COMPLETE, () => {
+            SM.PlaySFX(SFX.Complete);
             let complete = this.add.text(0, 100, 'Complete', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
             .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
             .setFontSize(40).setWordWrapWidth(250).setStroke('0#000', 3);
@@ -233,7 +236,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     private RemoveListeners() {
-        console.log('Removing all listeners!');
         this.events.removeListener('debug');
         this.events.removeListener(CustomEvents.CHECK_LEVEL_COMPLETE);
         this.events.removeListener(CustomEvents.LEVEL_COMPLETE);
@@ -303,7 +305,7 @@ export class GameScene extends Phaser.Scene {
         // this.realMask.draw(this.LightObjects);
 
 
-        this.events.emit('debug', `State: ${this.p.fsm.currentModuleName}`);
+        // this.events.emit('debug', `State: ${this.p.fsm.currentModuleName}`);
         // this.events.emit('debug', `P loc: ${Math.floor(this.e.sprite.body.x)},  ${Math.floor(this.e.sprite.body.y)}`);
         // this.events.emit('debug', `Mouse loc: ${Math.floor(this.input.mousePointer.worldX)},  ${Math.floor(this.input.mousePointer.worldY)}`);
 
@@ -319,6 +321,9 @@ export class GameScene extends Phaser.Scene {
         }
         
     PlayerDied() {
+        SM.PlaySFX(SFX.Disgraced);
+        this.DisplayText.setAlpha(1).setText("DISGRACED").setTint(0xffffff).setFontSize(50);
+
         this.time.addEvent({
             delay:1500,
             callbackScope:this,

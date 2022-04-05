@@ -1,4 +1,5 @@
 import { GameData } from "./GameData";
+import { Music } from "./SM";
 
 export class C {
     static currentLevel:string = '';
@@ -18,6 +19,7 @@ export class C {
     static NINJASTAR_THROW_STRENGTH = 600;
 
     static SelectedChapter:number = 0;
+    static SelectedMusic:Music;
 
     static gd:GameData;
 

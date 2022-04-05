@@ -55,6 +55,7 @@ export class Player extends Entity {
                 let poof = this.gs.add.sprite(s.x, s.y, 'atlas', 'poof_0').setDepth(100);
                 this.gs.realLayer.add(poof);
                 poof.play('effect_poof');
+                SM.PlaySFX(SFX.Teleport);
             }
 
         });
