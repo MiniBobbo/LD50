@@ -19,7 +19,6 @@ export class Soldier extends Entity {
         this.gs.collideMap.push(this.sprite);
 
         this.sprite.on(CustomEvents.HIT_PLAYER, () => {
-            console.log('Player hit soldier');
             this.gs.events.emit(CustomEvents.PLAYER_HIT_SOLDIER);
             this.gs.events.emit(CustomEvents.CHECK_LEVEL_COMPLETE);
             this.Dead();
