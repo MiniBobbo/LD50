@@ -49,17 +49,46 @@ Sprint 5
 
 Sprint 6
 * Chapter 4 complete
-Grahpics for scroll
-Grahpics for key
-Graphics for Magistrate
+* Grahpics for scroll
+* Grahpics for key
+* Graphics for Magistrate
 * Remaning SFX
 
+Sprint 7
+Add single blocks to tilesets
+Create Outdoor tileset
+Create Mine tileset
+Complete Movement REVAMP
+* Restore cursor position
+* Spikes always kill the ninja
+Mouse sensitivity slider
+
+
+
+MOVEMENT REVAMP
+Add icon change when running vs jumping. - I'm not sure this is necessary.  If the flip up and flip down features are working then this shouldn't matter.
+What happens when you run into a wall?  
+When you run off the edge of a platform instead of just falling, flip down and stick to the wall so you are ready to jump.
+* Either eliminate the running through spikes, or add more situations where it is useful. - Eliminate,  would interact funny with some of the other planned changes.
+Add a "flip up" feature when you are close to a corner and you try to jump through it.  Transition from surface to surface.
+* Drop down when you are on a wall and you click below you even if the angle isn't perfect.  Loosen this requirement.
+
 Quality of Life Improvements
-* Reposition the cursor to where it was in the previous scene.
+Reposition the cursor to where it was in the previous scene.  Currently just does the center of the screen.
 Display quick restart and menu keys somewhere in game.
+Show jump path preview
+Mouse Sensitivity slider
+Camera looks half way between the ninja and cursor?
+
+
+
 Tips on the bottom of the screen
 
-Throwing stars added
+Major changes considered...
+Items and powers as pickups.
+Change control scheme.  Directional pad moves and mouse and clicks jump.  Add Wall Climbing and Moving along the ceiling 
+
+
 
 
 Animations

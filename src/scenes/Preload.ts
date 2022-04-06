@@ -167,6 +167,8 @@ export class Preload extends Phaser.Scene {
         // this.anims.create({ key: 'player_jumpup', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpup_', end: 0}), repeat: -1 });
         // this.anims.create({ key: 'player_jumpdown', frameRate: 20, frames: this.anims.generateFrameNames('atlas', { prefix: 'player_jumpdown_', end: 3}), repeat: 0 });
 
+        C.LastCursorPosition = {x:125, y:125};
+
     }
     Finished() {
         this.LoadCount++;

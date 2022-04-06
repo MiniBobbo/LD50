@@ -27,14 +27,8 @@ export class Player extends Entity {
         this.gs.events.on(CustomEvents.LEVEL_COMPLETE, this.Disappear, this);
         this.gs.events.on(CustomEvents.PLAYER_DIED, this.NinjaLoss, this);
         this.gs.events.on(CustomEvents.PLAYER_HIT_SPIKES, () => {
-            if(this.fsm.currentModuleName == 'ninja') {
-                let f = this.fsm.currentModule as NinjaFSM;
-                if(f.dir != D.D) {
                     SM.PlaySFX(SFX.Slice);
                     this.gs.events.emit(CustomEvents.PLAYER_DIED);
-        
-                }
-            }
         }, this);
 
 

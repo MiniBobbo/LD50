@@ -33,7 +33,7 @@ class Main extends Phaser.Game {
     super(config);
 
     this.scene.add("preload", Preload, false);
-    this.scene.add("game", GameScene, false);
+    // this.scene.add("game", GameScene, false);
     this.scene.add("restart", RestartScene, false);
     this.scene.add("restartmenu", RestartMenuScene, false);
     this.scene.add("menu", MainMenuScene, false);

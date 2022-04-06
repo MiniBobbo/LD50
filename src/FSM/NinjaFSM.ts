@@ -12,6 +12,7 @@ export class NinjaFSM extends FSMModule {
     gs:GameScene;
     dir:D;
 
+
     running:boolean = false;
 
     moduleStart(args: any): void {
@@ -45,20 +46,21 @@ export class NinjaFSM extends FSMModule {
         //Check the screen position and not the world position.  That will mess up depending on the camera.
         let cam = this.gs.cameras.main;
         let cpos = {x: cam.scrollX + this.gs.cursor.x, y: cam.scrollY + this.gs.cursor.y}; 
+        let spos = {x: this.p.sprite.body.x, y: this.p.sprite.body.y}; 
         switch (this.dir) {
             case D.D:
-                if(cpos.y < this.p.sprite.y) {
+                if(cpos.y < spos.y) {
                     this.Jump(cpos);
                 }
                 else {
                     this.target.x = cpos.x;
-                    this.target.y = this.p.sprite.y;
+                    this.target.y = spos.y;
                     this.Run();
                 }
             
                 break;
             case D.U:
-                if(cpos.y > this.p.sprite.y) {
+                if(cpos.y > spos.y) {
                     this.Jump(cpos);
                 }
                 else {
@@ -69,7 +71,12 @@ export class NinjaFSM extends FSMModule {
             
                 break;
             case D.L:
-                if(cpos.x > this.p.sprite.x) {
+                if(cpos.x > spos.x) {
+                    this.Jump(cpos);
+                } else if (cpos.x > spos.x - C.JUMP_UP_DOWN_GRACE_SIZE) {
+                    //This is a game feel movement enhancement.  If the player is clicking below them but they have the angle slightly too shallow assume that they mean to jump down and jump parallel to the wall.
+                    console.log("Left side grace run");
+                    cpos.x = spos.x;
                     this.Jump(cpos);
                 }
                 else {
@@ -78,7 +85,12 @@ export class NinjaFSM extends FSMModule {
             
             break;
         case D.R:
-                if(cpos.x < this.p.sprite.x) {
+                if(cpos.x < spos.x) {
+                    this.Jump(cpos);
+                } else if (cpos.x < spos.x + C.JUMP_UP_DOWN_GRACE_SIZE) {
+                    //This is a game feel movement enhancement.  If the player is clicking below them but they have the angle slightly too shallow assume that they mean to jump down and jump parallel to the wall.
+                    console.log("Right side grace run");
+                    cpos.x = spos.x;
                     this.Jump(cpos);
                 }
                 else {
@@ -97,7 +109,7 @@ export class NinjaFSM extends FSMModule {
         // this.gs.cursor.y | this.p.sprite.y
         this.running = false;
         SM.PlaySFX(SFX.Woosh);
-        let a = Phaser.Math.Angle.BetweenPoints(this.gs.p.sprite, cpos);
+        let a = Phaser.Math.Angle.BetweenPoints(this.gs.p.sprite.body, cpos);
         let v = new Phaser.Math.Vector2(C.NINJA_JUMP_STR, 0);
         v.rotate(a);
         this.p.sprite.setVelocity(v.x, v.y);

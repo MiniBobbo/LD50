@@ -27,7 +27,6 @@ export class MainMenuScene extends Phaser.Scene {
     initted:boolean = false;
 
     init() {
-        console.log('init menu');
         this.initted = true;
         this.buttons = this.physics.add.group();
         this.EraseButton = this.CreateButton('Change Music', this.CycleMusic, 10).setPosition(5,0).setDepth(2000);
@@ -51,6 +50,12 @@ export class MainMenuScene extends Phaser.Scene {
         }
         this.allComplete = true;
 
+        this.PointerOffset = {x:0, y:0};
+
+        //Reset the cursor to the previous position
+        this.PointerOffset.x= C.LastCursorPosition.x;
+        this.PointerOffset.y = C.LastCursorPosition.y;
+
         this.ChapterButtons = [];
 
         this.TotalTime = 0;
@@ -59,7 +64,6 @@ export class MainMenuScene extends Phaser.Scene {
         let r: LdtkReader = new LdtkReader(this, this.cache.json.get('levels'));
         let allLevels = r.ldtk.levels;
 
-        console.log(JSON.stringify(C.gd));
 
         this.bg2 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_1').setOrigin(0,0);
         this.bg1 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_0').setOrigin(0,0);
@@ -69,9 +73,8 @@ export class MainMenuScene extends Phaser.Scene {
         if(this.scene.get('game')!= null)
             this.scene.remove('game');
 
-        this.cursor = this.physics.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(5000).setScrollFactor(0, 0).setSize(2,2);
+        this.cursor = this.physics.add.image(this.PointerOffset.x, this.PointerOffset.y, 'atlas', C.cursorFrame).setDepth(5000).setScrollFactor(0, 0).setSize(2,2);
 
-        this.PointerOffset = {x:0, y:0};
 
         // this.Title = this.add.text(120,30, 'Revenge is Inevitable').setFontSize(16).setWordWrapWidth(240).setOrigin(.5,0);
         let title = this.add.text(0,35,'Revenge is Inevitable', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})
@@ -84,16 +87,16 @@ export class MainMenuScene extends Phaser.Scene {
         this.CreateChapters(allLevels);
         this.SelectChapter(C.SelectedChapter);
 
-        this.PointerOffset.x = 125;
-        this.PointerOffset.y = 125;
+        // this.PointerOffset.x = 125;
+        // this.PointerOffset.y = 125;
 
 
 
         this.input.on('pointerdown', (pointer) => {
             if (!this.input.mouse.locked)
             {
-                this.PointerOffset.x += pointer.x;
-                this.PointerOffset.y += pointer.y;
+                // this.PointerOffset.x += pointer.x;
+                // this.PointerOffset.y += pointer.y;
                 this.input.mouse.requestPointerLock();
             } else {
                 this.events.emit(CustomEvents.PLAYER_CLICKED, pointer);
@@ -253,10 +256,6 @@ export class MainMenuScene extends Phaser.Scene {
             button.emit(CustomEvents.BUTTON_CLICKED);
             });
 
-        // this.buttons.children.iterate(e=>{
-        //     let t = e as Phaser.GameObjects.Text;
-
-        // });
     }
 
     CycleMusic() {
@@ -307,6 +306,9 @@ export class MainMenuScene extends Phaser.Scene {
         let t = this.add.text(0,0,levelName, {fontFamily: '"Yeon Sung", "Arial"'}).setInteractive().setStroke('0#000', 3).setFontSize(14).setTint(0xffffff);
         t.once(CustomEvents.BUTTON_CLICKED, () => {
             this.scene.add('game', GameScene);
+            C.LastCursorPosition.x = this.PointerOffset.x;
+            C.LastCursorPosition.y = this.PointerOffset.y;
+
             this.scene.start('game', {levelName:levelID});
 
         }, this);
@@ -323,10 +325,13 @@ export class MainMenuScene extends Phaser.Scene {
 
         }
 
-        t.once(CustomEvents.BUTTON_CLICKED, () => {
-            this.scene.add('game', GameScene);
-            this.scene.start('game', {levelName:levelID});
-        }, this);
+        // t.once(CustomEvents.BUTTON_CLICKED, () => {
+        //     this.scene.add('game', GameScene);
+        //     C.LastCursorPosition.x = this.PointerOffset.x;
+        //     C.LastCursorPosition.y = this.PointerOffset.y;
+
+        //     this.scene.start('game', {levelName:levelID});
+        // }, this);
         c.add(time);
         this.buttons.add(t);
         return c;

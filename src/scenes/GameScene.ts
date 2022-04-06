@@ -46,12 +46,7 @@ export class GameScene extends Phaser.Scene {
     collidePlayer!:Phaser.GameObjects.Group;
     collideEntity!:Phaser.Physics.Arcade.Group;
     entities!:Phaser.GameObjects.Group;
-
-
-
     Win:WinConditions;
-
-    
 
     //Entity variables 
     p:Player;
@@ -92,7 +87,6 @@ export class GameScene extends Phaser.Scene {
         this.MouseCapture();
         MapHelper.CreateMap(this, data.levelName);
 
-        // this.GoalText = this.add.bitmapText(10,230, '6px', this.Win.GoalText).setDepth(2000).setFontSize(10).setScrollFactor(0);
 
         this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(6).setScrollFactor(0);
         this.DisplayText = this.add.text(0, 100, 'Ready...', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
@@ -251,9 +245,10 @@ export class GameScene extends Phaser.Scene {
         // this.LightObjects = this.add.container(0, 0);
         this.HudLayer = this.add.layer().setDepth(1000);
 
-        this.PointerOffset.x = 125;
-        this.PointerOffset.y = 125;
-        this.cursor = this.add.image(125, 125, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0);
+        //Reset the cursor to the previous position
+        this.PointerOffset.x= C.LastCursorPosition.x;
+        this.PointerOffset.y = C.LastCursorPosition.y;
+        this.cursor = this.add.image(this.PointerOffset.x, this.PointerOffset.y, 'atlas', C.cursorFrame).setDepth(1000).setScrollFactor(0, 0);
         this.HudLayer.add(this.cursor);
 
         // this.realLayer.add(this.add.image(0, 0, 'mockup_0').setOrigin(0, 0));
@@ -268,10 +263,16 @@ export class GameScene extends Phaser.Scene {
         this.debugText.text = '';
         this.Win.update();
 
+
         if(this.ih.IsJustPressed('menu')) {
+            C.LastCursorPosition.x = this.PointerOffset.x;
+            C.LastCursorPosition.y = this.PointerOffset.y;
             this.scene.start('restartmenu');
         }
         if(this.ih.IsJustPressed('restart')) {
+            C.LastCursorPosition.x = this.PointerOffset.x;
+            C.LastCursorPosition.y = this.PointerOffset.y;
+
             this.scene.start('restart');
         }
 
@@ -328,6 +329,9 @@ export class GameScene extends Phaser.Scene {
             delay:1500,
             callbackScope:this,
             callback:() => {
+                C.LastCursorPosition.x = this.PointerOffset.x;
+                C.LastCursorPosition.y = this.PointerOffset.y;
+    
                 this.scene.start('restart');
                 this.scene.remove();
         

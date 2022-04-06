@@ -5,11 +5,11 @@
 		"doc": "https://ldtk.io/json",
 		"schema": "https://ldtk.io/files/JSON_SCHEMA.json",
 		"appAuthor": "Sebastien 'deepnight' Benard",
-		"appVersion": "1.1.0",
+		"appVersion": "1.1.1",
 		"url": "https://ldtk.io"
 	},
-	"jsonVersion": "1.1.0",
-	"appBuildId": 458005,
+	"jsonVersion": "1.1.1",
+	"appBuildId": 458076,
 	"nextUid": 84,
 	"identifierStyle": "Capitalize",
 	"worldLayout": "LinearVertical",
@@ -7849,23 +7849,6 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "Text",
-							"__grid": [14,10],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#34674B",
-							"iid": "94c03340-8dc0-11ec-9789-29bf1ae9dd02",
-							"width": 16,
-							"height": 16,
-							"defUid": 42,
-							"px": [280,200],
-							"fieldInstances": [{ "__identifier": "TextToWrite", "__value": "Run, not jump", "__type": "String", "__tile": null, "defUid": 43, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Run, not jump"]
-							}] }]
-						},
-						{
 							"__identifier": "SmallBlade",
 							"__grid": [2,10],
 							"__pivot": [0.5,0.5],
@@ -7931,23 +7914,6 @@
 							}] }]
 						},
 						{
-							"__identifier": "GroundSpikes",
-							"__grid": [17,12],
-							"__pivot": [0,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D449A5",
-							"iid": "64525730-8dc0-11ec-927b-cbea174d7dbb",
-							"width": 20,
-							"height": 20,
-							"defUid": 44,
-							"px": [340,260],
-							"fieldInstances": [{ "__identifier": "D", "__value": "D", "__type": "LocalEnum.D", "__tile": null, "defUid": 53, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["D"]
-							}] }]
-						},
-						{
 							"__identifier": "Text",
 							"__grid": [5,6],
 							"__pivot": [0,0],
@@ -7962,91 +7928,6 @@
 							"fieldInstances": [{ "__identifier": "TextToWrite", "__value": "Press R for a quick restart", "__type": "String", "__tile": null, "defUid": 43, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["Press R for a quick restart"]
-							}] }]
-						},
-						{
-							"__identifier": "GroundSpikes",
-							"__grid": [18,12],
-							"__pivot": [0,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D449A5",
-							"iid": "939e0120-8dc0-11ec-927b-8143f55834d0",
-							"width": 20,
-							"height": 20,
-							"defUid": 44,
-							"px": [360,260],
-							"fieldInstances": [{ "__identifier": "D", "__value": "U", "__type": "LocalEnum.D", "__tile": null, "defUid": 53, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["U"]
-							}] }]
-						},
-						{
-							"__identifier": "GroundSpikes",
-							"__grid": [19,12],
-							"__pivot": [0,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D449A5",
-							"iid": "94656fd0-8dc0-11ec-927b-63476a63fc6c",
-							"width": 20,
-							"height": 20,
-							"defUid": 44,
-							"px": [380,260],
-							"fieldInstances": [{ "__identifier": "D", "__value": "D", "__type": "LocalEnum.D", "__tile": null, "defUid": 53, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["D"]
-							}] }]
-						},
-						{
-							"__identifier": "GroundSpikes",
-							"__grid": [20,12],
-							"__pivot": [0,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D449A5",
-							"iid": "94a31510-8dc0-11ec-927b-11fffff3a326",
-							"width": 20,
-							"height": 20,
-							"defUid": 44,
-							"px": [400,260],
-							"fieldInstances": [{ "__identifier": "D", "__value": "U", "__type": "LocalEnum.D", "__tile": null, "defUid": 53, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["U"]
-							}] }]
-						},
-						{
-							"__identifier": "GroundSpikes",
-							"__grid": [21,12],
-							"__pivot": [0,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D449A5",
-							"iid": "9552b600-8dc0-11ec-927b-dfa44e6eb21f",
-							"width": 20,
-							"height": 20,
-							"defUid": 44,
-							"px": [420,260],
-							"fieldInstances": [{ "__identifier": "D", "__value": "D", "__type": "LocalEnum.D", "__tile": null, "defUid": 53, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["D"]
-							}] }]
-						},
-						{
-							"__identifier": "Text",
-							"__grid": [19,13],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#34674B",
-							"iid": "ba053e00-8dc0-11ec-927b-a32ba7bda85e",
-							"width": 16,
-							"height": 16,
-							"defUid": 42,
-							"px": [380,260],
-							"fieldInstances": [{ "__identifier": "TextToWrite", "__value": "Click the ground to run", "__type": "String", "__tile": null, "defUid": 43, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Click the ground to run"]
 							}] }]
 						},
 						{

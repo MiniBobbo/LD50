@@ -18,6 +18,11 @@ export class C {
     static NINJA_JUMP_STR:number = 500;
     static NINJASTAR_THROW_STRENGTH = 600;
 
+    static JUMP_UP_DOWN_GRACE_SIZE:number = 10;
+
+    //Stores the last cursor position so we can put it back in place when the screen transitions.
+    static LastCursorPosition:{x:number, y:number};
+
     static SelectedChapter:number = 0;
     static SelectedMusic:Music;
 
