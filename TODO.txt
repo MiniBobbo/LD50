@@ -62,13 +62,14 @@ Complete Movement REVAMP
 * Restore cursor position
 * Spikes always kill the ninja
 Mouse sensitivity slider
+Increase resolution to 400x400?
 
 
 
 MOVEMENT REVAMP
 Add icon change when running vs jumping. - I'm not sure this is necessary.  If the flip up and flip down features are working then this shouldn't matter.
-What happens when you run into a wall?  
-When you run off the edge of a platform instead of just falling, flip down and stick to the wall so you are ready to jump.
+* What happens when you run into a wall?  - You grab onto it.  
+* When you run off the edge of a platform instead of just falling, flip down and stick to the wall so you are ready to jump.
 * Either eliminate the running through spikes, or add more situations where it is useful. - Eliminate,  would interact funny with some of the other planned changes.
 Add a "flip up" feature when you are close to a corner and you try to jump through it.  Transition from surface to surface.
 * Drop down when you are on a wall and you click below you even if the angle isn't perfect.  Loosen this requirement.

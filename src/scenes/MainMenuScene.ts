@@ -64,6 +64,8 @@ export class MainMenuScene extends Phaser.Scene {
         let r: LdtkReader = new LdtkReader(this, this.cache.json.get('levels'));
         let allLevels = r.ldtk.levels;
 
+        allLevels.shift();
+
 
         this.bg2 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_1').setOrigin(0,0);
         this.bg1 = this.add.tileSprite(0, 0, 250,250, 'atlas', 'menubg_0').setOrigin(0,0);
@@ -252,7 +254,6 @@ export class MainMenuScene extends Phaser.Scene {
     CheckButtons(PLAYER_CLICKED: CustomEvents, CheckButtons: any, arg2: this) {
         this.physics.overlap(this.cursor, this.buttons, (c:any, b:any) => {
             let button = b as Phaser.GameObjects.Text;
-            console.log(`Overlapping ${b.text}`);
             button.emit(CustomEvents.BUTTON_CLICKED);
             });
 

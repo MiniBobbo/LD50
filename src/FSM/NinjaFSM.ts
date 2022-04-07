@@ -46,7 +46,7 @@ export class NinjaFSM extends FSMModule {
         //Check the screen position and not the world position.  That will mess up depending on the camera.
         let cam = this.gs.cameras.main;
         let cpos = {x: cam.scrollX + this.gs.cursor.x, y: cam.scrollY + this.gs.cursor.y}; 
-        let spos = {x: this.p.sprite.body.x, y: this.p.sprite.body.y}; 
+        let spos = {x: this.p.sprite.x, y: this.p.sprite.y}; 
         switch (this.dir) {
             case D.D:
                 if(cpos.y < spos.y) {
@@ -87,7 +87,7 @@ export class NinjaFSM extends FSMModule {
         case D.R:
                 if(cpos.x < spos.x) {
                     this.Jump(cpos);
-                } else if (cpos.x < spos.x + C.JUMP_UP_DOWN_GRACE_SIZE) {
+                } else if (cpos.x < spos.x + C.JUMP_UP_DOWN_GRACE_SIZE*2) {
                     //This is a game feel movement enhancement.  If the player is clicking below them but they have the angle slightly too shallow assume that they mean to jump down and jump parallel to the wall.
                     console.log("Right side grace run");
                     cpos.x = spos.x;
@@ -178,17 +178,39 @@ export class NinjaFSM extends FSMModule {
             }
         }  else if(this.running) {
             if(!this.p.sprite.body.blocked.down) {
-                this.dir = D.None;
-                this.StopRun();
+                //Insetad of just falling, swing down and grab into the ledge that we just fell from.
+                this.FlipDown();
             } else if(this.p.sprite.body.velocity.x > 0 && this.p.sprite.x >= this.target.x) {
                 this.StopRun();
             } else if(this.p.sprite.body.velocity.x < 0 && this.p.sprite.x <= this.target.x) {
                 this.StopRun();
+            } else if(this.p.sprite.body.blocked.left) {
+                this.dir = D.L;
+                this.p.PlayAnimation('wallgrab');
+                this.p.sprite.flipX = false;
             }
-    
+            else if(this.p.sprite.body.blocked.right) {
+                this.dir = D.R;
+                this.p.PlayAnimation('wallgrab');
+                this.p.sprite.flipX = true;
+            }
         }
-        
     }
+
+    
+    FlipDown() {
+        this.p.sprite.y += 10;
+        this.p.sprite.setVelocity(0,0);
+        this.p.sprite.setGravity(0,0);
+        this.StopRun();
+        this.p.PlayAnimation('wallgrab');
+        //TODO: Add animation here.  
+        if(this.p.sprite.flipX) {
+            this.dir = D.R;
+        } else
+        this.dir = D.L;
+
+}
     StopRun() {
         this.p.sprite.setVelocityX(0);
         this.running = false;
