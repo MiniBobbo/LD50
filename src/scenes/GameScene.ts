@@ -41,6 +41,7 @@ export class GameScene extends Phaser.Scene {
 
     maps:LDtkMapPack;
 
+    // debugText:Phaser.GameObjects.Text;
     debugText:Phaser.GameObjects.BitmapText;
     collideMap!:Array<Phaser.GameObjects.GameObject>;
     collidePlayer!:Phaser.GameObjects.Group;
@@ -86,9 +87,12 @@ export class GameScene extends Phaser.Scene {
         this.CreateBaseObjects();
         this.MouseCapture();
         MapHelper.CreateMap(this, data.levelName);
-
+        C.CurrentCollisionLayer = this.maps.collideLayer;
 
         this.debugText = this.add.bitmapText(0,0, '6px', '').setDepth(2000).setFontSize(6).setScrollFactor(0);
+        // this.debugText = this.add.text(0, 10, 'Debug', {fontFamily: '"Yeon Sung", "Arial"'})
+        // .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
+        // .setFontSize(12).setWordWrapWidth(250).setOrigin(0,0);
         this.DisplayText = this.add.text(0, 100, 'Ready...', {align:'center', fontFamily: '"Yeon Sung", "Arial"'})        
         .setFixedSize(250,0).setTint(0xffffff).setScrollFactor(0,0)
         .setFontSize(40).setWordWrapWidth(250);
@@ -262,6 +266,8 @@ export class GameScene extends Phaser.Scene {
         this.ih.update();
         this.debugText.text = '';
         this.Win.update();
+        this.debugText.text = `Cursor position - X:${this.cursor.x}, Y:${this.cursor.y}\n
+        Player position - X:${Math.floor(this.p.sprite.x)}, Y:${Math.floor(this.p.sprite.y)}`;
 
 
         if(this.ih.IsJustPressed('menu')) {

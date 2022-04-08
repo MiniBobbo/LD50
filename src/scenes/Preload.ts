@@ -2,6 +2,7 @@ import { C } from "../C";
 import { GameData } from "../GameData";
 import { IH } from "../IH/IH";
 import { Music } from "../SM";
+import { GameScene } from "./GameScene";
 
 export class Preload extends Phaser.Scene {
     LoadCount:number = 0;
@@ -173,8 +174,9 @@ export class Preload extends Phaser.Scene {
     Finished() {
         this.LoadCount++;
         if(this.LoadCount == 2)
-            this.scene.start('menu');
-            // this.scene.start('game', {levelName:'Level_5'});
+            // this.scene.start('menu');
+            this.scene.add('game', GameScene, false);
+            this.scene.start('game', {levelName:'TestLevel'});
     }
 
     private CreateAnimSet(key:string, prefix:string, end:number, repeat:number, frameRate:number = 20, padding:number = 0) {

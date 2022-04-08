@@ -3,6 +3,7 @@ import { Music } from "./SM";
 
 export class C {
     static currentLevel:string = '';
+    static CurrentCollisionLayer:Phaser.Tilemaps.TilemapLayer;
 
     static MOUSE_SENSITIVITY:number = .5;
     static GAME_WIDTH:number = 400;
@@ -17,6 +18,9 @@ export class C {
     static NINJA_GROUND_SPEED:number = 400;
     static NINJA_JUMP_STR:number = 500;
     static NINJASTAR_THROW_STRENGTH = 600;
+
+    //How far should we let the ninja flip up something?
+    static NINJA_FLIP_DISTANCE:number = 20;
 
     static JUMP_UP_DOWN_GRACE_SIZE:number = 10;
 
@@ -33,9 +37,20 @@ export class C {
     static RoundToTile(x:number, y:number):{x:number, y:number} {
         let newX = 0;
         let newY = 0;
-        newX = Math.floor(x/C.TILE_SIZE) * C.TILE_SIZE;
-        newY = Math.floor(y/C.TILE_SIZE) * C.TILE_SIZE;
+        newX = Math.floor(x/C.TILE_SIZE) * C.TILE_SIZE + (C.TILE_SIZE/2);
+        newY = Math.floor(y/C.TILE_SIZE) * C.TILE_SIZE + (C.TILE_SIZE/2);
         return {x:newX, y:newY};
+    }
+
+    GetTileFromWorld(x:number, y:number):{x:number, y:number} {
+        return {
+            x:Math.floor(x/C.TILE_SIZE),
+            y:Math.floor(y/C.TILE_SIZE)
+        };
+    }
+
+    static GetTile(x: number, y:number):Phaser.Tilemaps.Tile {
+        return this.CurrentCollisionLayer.getTileAtWorldXY(x,y);
     }
 
     

@@ -63,6 +63,7 @@ Complete Movement REVAMP
 * Spikes always kill the ninja
 Mouse sensitivity slider
 Increase resolution to 400x400?
+Add an edge of level indicator
 
 
 
